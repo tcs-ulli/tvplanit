@@ -1,0 +1,154 @@
+object AlarmNotifyForm: TAlarmNotifyForm
+  Left = 225
+  Height = 207
+  Top = 143
+  Width = 405
+  HorzScrollBar.Page = 404
+  VertScrollBar.Page = 206
+  BorderStyle = bsToolWindow
+  Caption = 'Reminder'
+  ClientHeight = 207
+  ClientWidth = 405
+  Color = clInfoBk
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  KeyPreview = True
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poDefault
+  object Bevel1: TBevel
+    Left = 312
+    Height = 161
+    Top = 8
+    Width = 89
+  end
+  object Bevel2: TBevel
+    Left = 4
+    Height = 38
+    Top = 168
+    Width = 397
+  end
+  object SubjectCaption: TLabel
+    Left = 8
+    Height = 14
+    Top = 3
+    Width = 74
+    Caption = 'SubjectCaption'
+    ParentColor = False
+  end
+  object NotesCaption: TLabel
+    Left = 8
+    Height = 14
+    Top = 48
+    Width = 66
+    Caption = 'NotesCaption'
+    ParentColor = False
+  end
+  object SnoozeCaption: TLabel
+    Left = 10
+    Height = 13
+    Top = 181
+    Width = 276
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'SnoozeCaption'
+    ParentColor = False
+  end
+  object DismissBtn: TButton
+    Left = 320
+    Height = 25
+    Top = 16
+    Width = 75
+    Caption = 'DismissBtn'
+    OnClick = DismissBtnClick
+    TabOrder = 2
+  end
+  object SnoozeBtn: TButton
+    Left = 320
+    Height = 25
+    Top = 48
+    Width = 75
+    Caption = 'SnoozeBtn'
+    OnClick = SnoozeBtnClick
+    TabOrder = 3
+  end
+  object OpenItemBtn: TButton
+    Left = 320
+    Height = 25
+    Top = 96
+    Width = 75
+    Caption = 'OpenItemBtn'
+    OnClick = OpenItemBtnClick
+    TabOrder = 4
+  end
+  object SubjectEdit: TEdit
+    Left = 8
+    Height = 21
+    Top = 19
+    Width = 297
+    ReadOnly = True
+    TabOrder = 0
+  end
+  object NotesMemo: TMemo
+    Left = 8
+    Height = 97
+    Top = 64
+    Width = 297
+    Lines.Strings = (
+      '1'
+      '2'
+      '3'
+      '4'
+      '5'
+      '6'
+    )
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 1
+  end
+  object SnoozeCombo: TComboBox
+    Left = 290
+    Height = 21
+    Top = 178
+    Width = 106
+    AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 13
+    Items.Strings = (
+      '5 Minutes'
+      '10 Minutes'
+      '15 Minutes'
+      '30 Minutes'
+      '45 Minutes'
+      '1 Hours'
+      '2 Hours'
+      '3 Hours'
+      '4 Hours'
+      '5 Hours'
+      '6 Hours'
+      '7 Hours'
+      '8 Hours'
+      '1 Days'
+      '2 Days'
+      '3 Days'
+      '4 Days'
+      '5 Days'
+      '6 Days'
+      '1 Week'
+    )
+    OnChange = SnoozeComboChange
+    ParentColor = True
+    Style = csDropDownList
+    TabOrder = 5
+  end
+  object EventDialog: TVpEventEditDialog
+    Version = 'v1.03'
+    TimeFormat = tf24Hour
+    Placement.Position = mpCenterTop
+    Placement.Top = 10
+    Placement.Left = 10
+    Placement.Height = 412
+    Placement.Width = 705
+    left = 272
+    top = 8
+  end
+end
