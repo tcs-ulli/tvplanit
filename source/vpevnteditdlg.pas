@@ -35,14 +35,14 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows, Messages, Mask,
   {$ENDIF}
   SysUtils, {$IFDEF VERSION6}Variants,{$ENDIF} Classes,
   Graphics, Controls, Forms, Dialogs, StdCtrls, ExtCtrls, VpData, VpEdPop,
   VpDateEdit, ComCtrls, VpBase, VpClock, VpBaseDS, VpDlg, VpConst,
-  Buttons;
+  Buttons, EditBtn;
 
 type
   { forward declarations }
@@ -55,7 +55,12 @@ type
     procedure CreateParams(var Params : TCreateParams); override;
   end;
 
+  { TDlgEventEdit }
+
   TDlgEventEdit = class(TForm)
+    StartDate: TDateEdit;
+    EndDate: TDateEdit;
+    RepeatUntil: TDateEdit;
     Panel1: TPanel;
     OKBtn: TButton;
     CancelBtn: TButton;
@@ -87,12 +92,9 @@ type
     AdvanceUpDown: TUpDown;
     AlarmAdvance: {$IFDEF LCL}TEdit{$ELSE}TMaskEdit{$ENDIF};
     CBAllDay: TCheckBox;
-    StartDate: TVpDateEdit;
-    EndDate: TVpDateEdit;
     NotesMemo: TMemo;
     edtUnusedPlaceholder: TEdit;
     imgClock: TImage;
-    RepeatUntil: TVpDateEdit;
     RecurrenceEndsLbl: TLabel;
     procedure OKBtnClick(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
@@ -224,8 +226,8 @@ begin
   StartDate.Date := Event.StartTime;
   EndDate.Date := Event.EndTime;
   RepeatUntil.Date := Event.RepeatRangeEnd;
-  StartTime.Text := FormatDateTime('h:mm AM/PM', Event.StartTime);
-  EndTime.Text := FormatDateTime('h:mm AM/PM', Event.EndTime);
+  StartTime.Text := TimeToStr(Event.StartTime);
+  EndTime.Text := TimeToStr(Event.EndTime);
 
   StartTimeChange(Self);
   CBAllDay.Checked := Event.AllDayEvent;
@@ -265,8 +267,8 @@ end;
 procedure TDlgEventEdit.DePopulateDialog;
 begin
   { Events }
-  Event.StartTime := StartDate.Date + StrToDateTime(StartTime.Text);
-  Event.EndTime := EndDate.Date + StrToDateTime(EndTime.Text);
+  Event.StartTime := StartDate.Date + StrToTime(StartTime.Text);
+  Event.EndTime := EndDate.Date + StrToTime(EndTime.Text);
   Event.RepeatRangeEnd := RepeatUntil.Date;
   Event.Description := DescriptionEdit.Text;
   Event.Note := NotesMemo.Text;
@@ -301,10 +303,11 @@ procedure TDlgEventEdit.StartTimeChange(Sender: TObject);
 begin
   { Verify the value is valid }
   try
-    {ST :=} StrToDateTime(StartTime.Text);                               
+    {ST :=} StrToTime(StartTime.Text);
   except
     StartTime.Color := clRed;
-    StartTime.SetFocus;
+    if Visible then
+      StartTime.SetFocus;
     Exit;
   end;
   StartTime.Color := clWindow;
@@ -336,7 +339,7 @@ var
 begin
   { Verify the value is valid }
   try
-    ET := StrToDateTime (EndTime.Text);                                  
+    ET := StrToTime (EndTime.Text);
     if (IsMidnight (ET)) and (not IsMidnight (FLastEndTime)) then        
       EndDate.Date := EndDate.Date + 1                                   
     else if (not IsMidnight (ET)) and (IsMidnight (FLastEndTime)) then   
@@ -637,7 +640,7 @@ var
   DlgEventEdit: TDlgEventEdit;
 begin
   ceEvent := Event;
-  Application.CreateForm(TDlgEventEdit, DlgEventEdit);
+  DlgEventEdit := TDlgEventEdit.Create(Self);
   try
     DoFormPlacement(DlgEventEdit);
     SetFormCaption(DlgEventEdit, Event.Description, RSDlgEventEdit);
@@ -680,8 +683,8 @@ var
 begin                                                                    
   { Verify the value is valid                                          } 
   try                                                                    
-    ST := StrToDateTime (StartDate.Text) +                               
-          StrToDateTime (StartTime.Text);                                
+    ST := StartDate.Date +
+          StrToTime (StartTime.Text);
   except                                                                 
     StartTime.Color := clRed;                                            
     StartTime.SetFocus;                                                  
@@ -692,14 +695,10 @@ begin
   { if the end time is less than the start time then change the end    } 
   {  time to  follow the start time by 30 minutes                      } 
 
-  if ST > StrToDateTime (EndDate.Text) +                                 
-          StrToDateTime (EndTime.Text) then begin                        
-    if TimeFormat = tf24Hour then                                        
-      EndTime.Text := FormatDateTime ('h:mm', ST + (30/MinutesInDay))    
-    else                                                                 
-      EndTime.Text := FormatDateTime ('hh:mm AM/PM',                     
-                                      ST + (30/MinutesInDay));           
-  end;                                                                   
+  if ST > EndDate.Date +
+          StrToTime (EndTime.Text) then begin
+  EndTime.Text := TimeToStr(ST + (30/MinutesInDay));
+  end;
 end;                                                                     
 
 procedure TDlgEventEdit.EndTimeExit(Sender: TObject);                    
@@ -709,7 +708,7 @@ var
 begin                                                                    
   { Verify the value is valid                                          } 
   try                                                                    
-    ET := STrToDateTime (EndDate.Text) + StrToDateTime (EndTime.Text);   
+    ET := EndDate.Date + StrToTime (EndTime.Text);
   except                                                                 
     EndTime.Color := clRed;                                              
     EndTime.SetFocus;                                                    
@@ -720,15 +719,14 @@ begin
   { if the end time is less than the start time then change the        } 
   { start time to precede the end time by 30 minutes                   } 
 
-  if ET < StrToDateTime (StartDate.Text) +                               
-          StrToDateTime (StartTime.Text) then begin                      
-    if TimeFormat = tf24Hour then                                        
-      StartTime.Text := FormatDateTime ('h:mm', ET - (30/MinutesInDay))  
-    else                                                                 
-      StartTime.Text := FormatDateTime ('h:mm AM/PM',                    
-                                        ET - (30/MinutesInDay));         
-  end;                                                                   
+  if ET < StartDate.Date +
+          StrToTime (StartTime.Text) then begin
+  StartTime.Text := TimeToStr(ET- (30/MinutesInDay));
+  end;
 end;                                                                     
+
+initialization
+  {$I vpevnteditdlg.lrs}
 
 end.
  
