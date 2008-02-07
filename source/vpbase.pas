@@ -48,7 +48,7 @@ uses
 
 const
   {Message base}
-  Vp_First              = $7DF0;   {Sets base for all Vp messages}
+  Vp_First              = WM_USER;//$7DF0;   {Sets base for all Vp messages}
 
 const
   {Custom message types}

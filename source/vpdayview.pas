@@ -61,9 +61,9 @@ uses
   {$IFDEF LCL}
   LMessages,LCLProc,LCLType,LCLIntf,
   {$ELSE}
-  Windows,Messages,
+  Windows,
   {$ENDIF}
-  Classes, Graphics, Controls, ComCtrls, ExtCtrls, StdCtrls,
+  Messages, Classes, Graphics, Controls, ComCtrls, ExtCtrls, StdCtrls,
   Buttons, VpBase, VpBaseDS, VpMisc, VpData, VpSR, VpConst,
   VpCanvasUtils, Menus;
 
@@ -390,6 +390,7 @@ type
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure SetTimeIntervals (UseGran : TVpGranularity);
     { message handlers }
+    procedure VpDayViewInit (var Msg : TMessage); Message Vp_DayViewInit;
     {$IFNDEF LCL}
     procedure WMSize(var Msg: TWMSize); message WM_SIZE;
     procedure WMVScroll(var Msg: TWMVScroll); message WM_VSCROLL;
@@ -397,7 +398,6 @@ type
     procedure WMEraseBackground (var Msg : TWMERASEBKGND);
     procedure CMWantSpecialKey(var Msg: TCMWantSpecialKey);
       message CM_WANTSPECIALKEY;
-    procedure VpDayViewInit (var Msg : TMessage); Message Vp_DayViewInit;
     {$ELSE}
     procedure WMSize(var Msg: TLMSize); message LM_SIZE;
     procedure WMVScroll(var Msg: TLMVScroll); message LM_VSCROLL;
@@ -724,7 +724,6 @@ end;
 { TVpDayView }
 
 constructor TVpDayView.Create(AOwner: TComponent);
-
 begin
   inherited;
   ControlStyle := [csCaptureMouse, csOpaque, csDoubleClicks];
@@ -1912,8 +1911,7 @@ end;
 procedure TVpDayView.CreateWnd;
 begin
   inherited;
-
-  PostMessage (Handle, Vp_DayViewInit, 0, 0);                           
+  PostMessage (Handle, Vp_DayViewInit, 0, 0);
 end;
 {=====}
 
@@ -4517,7 +4515,7 @@ begin
 end;
 {=====}
 
-{$IFNDEF LCL}
+{.$IFNDEF LCL}
 procedure TVpDayView.VpDayViewInit (var Msg : TMessage);
 begin                                                                  
   if csLoading in ComponentState then begin                            
@@ -4531,7 +4529,7 @@ begin
                       TopLine, -1);                                    
   SetVScrollPos;
 end;
-{$ENDIF}
+{.$ENDIF}
 
 (*****************************************************************************)
 { TVpCHAttributes }
