@@ -225,6 +225,8 @@ type
                default True;                                             
   end;                                                                   
 
+  { TVpDayView }
+
   TVpDayView = class(TVpLinkableControl)
   protected{ private }
     FGranularity       : TVpGranularity;
@@ -368,19 +370,14 @@ type
     procedure dvScrollVertical(Lines: Integer);
     procedure CreateParams(var Params: TCreateParams); override;
     procedure CreateWnd; override;
+    procedure MouseUp(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
+    procedure MouseMove(Shift: TShiftState; X,Y: Integer); override;
+    procedure MouseDown(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
     {$IFNDEF LCL}
-    procedure WMLButtonDown(var Msg : TWMLButtonDown); message WM_LBUTTONDOWN;
-    procedure WMRButtonDown(var Msg : TWMRButtonDown); message WM_RBUTTONDOWN;
-    procedure WMLButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
     procedure WMLButtonDblClk(var Msg : TWMLButtonDblClk);
       message WM_LBUTTONDBLCLK;
-    procedure WMMouseMove(var Msg : TWMMouseMove); message WM_MOUSEMOVE;
     {$ELSE}
-    procedure WMLButtonDown(var Msg : TLMLButtonDown); message LM_LBUTTONDOWN;
-    procedure WMRButtonDown(var Msg : TLMRButtonDown); message LM_RBUTTONDOWN;
-    procedure WMLButtonUp(var Msg: TLMLButtonUp); message LM_LBUTTONUP;
     procedure WMLButtonDblClk(var Msg : TLMLButtonDblClk);  message LM_LBUTTONDBLCLK;
-    procedure WMMouseMove(var Msg : TLMMouseMove); message LM_MOUSEMOVE;
     {$ENDIF}
     procedure SetActiveEventByCoord (APoint : TPoint);                   
     function EditEventAtCoord(Point: TPoint): Boolean;
@@ -1321,10 +1318,8 @@ begin
     DragObject := TVpEventDragObject.Create(Self);
     TVpEventDragObject(DragObject).Event := FActiveEvent;
   end
-{$IFNDEF LCL}
   else
-    EndDrag(false);
-{$ENDIF}
+    DragObject.Free;//EndDrag(false);
 end;
 {=====}
 
@@ -1399,9 +1394,7 @@ begin
 
     { Invalidate;                                                      } 
   end;
-{$IFNDEF LCL}
-  EndDrag(False);
-{$ENDIF}
+//  TVpEventDragObject(Source).EndDrag(False);
 end;
 {=====}
 
@@ -1913,58 +1906,78 @@ begin
   inherited;
   PostMessage (Handle, Vp_DayViewInit, 0, 0);
 end;
-{=====}
 
-{$IFNDEF LCL}
-procedure TVpDayView.WMLButtonDown(var Msg : TWMLButtonDown);
-{$ELSE}
-procedure TVpDayView.WMLButtonDown(var Msg : TLMLButtonDown);
-{$ENDIF}
+
+procedure TVpDayView.MouseUp(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
 begin
-  inherited;
-
-  dvMouseDownPoint := Point(Msg.XPos, Msg.YPos);
-  dvMouseDown      := true;
-
-  { if the mouse was pressed down in the client area, then select the cell. }
-  if not focused then SetFocus;
-
-  if (Msg.XPos > dvRowHeadWidth - 9) and (Msg.YPos > dvColHeadHeight) then
-  begin
-    { The mouse click landed inside the client area }
-    dvSetActiveColByCoord(Point(Msg.XPos, Msg.YPos));
-    dvSetActiveRowByCoord(Point(Msg.XPos, Msg.YPos), True);              
-    if not ReadOnly then
-      EditEventAtCoord(Point(Msg.XPos, Msg.YPos));
-  end else if Msg.YPos > dvColHeadHeight then                            
-    dvSetActiveRowByCoord (Point (Msg.XPos, Msg.YPos), True);            
-
-  if Assigned(OnClick) then
-    OnClick(self);
+  inherited MouseUp(Button, Shift, X, Y);
+  if Button = mbLeft then
+    begin
+      dvMouseDownPoint   := Point(0, 0);
+      dvMouseDown        := false;
+      dvDragging         := false;
+    end
+  else
+    begin
+    end;
 end;
-{=====}
 
-{$IFNDEF LCL}
-procedure TVpDayView.WMRButtonDown(var Msg : TWMRButtonDown);
-{$ELSE}
-procedure TVpDayView.WMRButtonDown(var Msg : TLMRButtonDown);
-{$ENDIF}
+procedure TVpDayView.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  inherited MouseMove(Shift, X, Y);
+  if (FActiveEvent <> nil) and (not ReadOnly) then begin
+    if (not dvDragging) and dvMouseDown
+    and ((dvMouseDownPoint.x <> x) or (dvMouseDownPoint.y <> y))
+    then begin
+      dvDragging := true;
+      dvClickTimer.Enabled := false;
+      BeginDrag(true);
+    end;
+  end;
+end;
+
+procedure TVpDayView.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
 var
   ClientOrigin : TPoint;
   i            : Integer;
 begin
-  { if the mouse was pressed down in the client area, then select the cell. }
+  inherited MouseDown(Button, Shift, X, Y);
+  if Button = mbLeft then
+    begin
+      dvMouseDownPoint := Point(x, y);
+      dvMouseDown      := true;
+
+      { if the mouse was pressed down in the client area, then select the cell. }
+      if not focused then SetFocus;
+
+      if (x > dvRowHeadWidth - 9) and (y > dvColHeadHeight) then
+        begin
+          { The mouse click landed inside the client area }
+          dvSetActiveColByCoord(Point(x, y));
+          dvSetActiveRowByCoord(Point(x, y), True);
+          if not ReadOnly then
+            EditEventAtCoord(Point(x, y));
+        end else if y > dvColHeadHeight then
+          dvSetActiveRowByCoord (Point (x, y), True);
+
+      if Assigned(OnClick) then
+        OnClick(self);
+    end
+  else
+    begin
   if not focused then
     SetFocus;
 
-  if (Msg.XPos > dvRowHeadWidth - 9) and (Msg.YPos > dvColHeadHeight) then
+  if (x > dvRowHeadWidth - 9) and (y > dvColHeadHeight) then
   begin
     { The mouse click landed inside the client area }
-    dvSetActiveColByCoord(Point(Msg.XPos, Msg.YPos));
-    dvSetActiveRowByCoord(Point(Msg.XPos, Msg.YPos), True);              
+    dvSetActiveColByCoord(Point(x, y));
+    dvSetActiveRowByCoord(Point(x, y), True);
   end;
 
-  EditEventAtCoord (Point (Msg.XPos, Msg.YPos));
+  EditEventAtCoord (Point (x, y));
   dvClickTimer.Enabled := false;
 
   if not Assigned (PopupMenu) then begin
@@ -1972,32 +1985,19 @@ begin
 
     if not Assigned (FActiveEvent) then
       for i := 0 to FDefaultPopup.Items.Count - 1 do begin
-        if (FDefaultPopup.Items[i].Tag = 1) or (ReadOnly) then           
+        if (FDefaultPopup.Items[i].Tag = 1) or (ReadOnly) then
           FDefaultPopup.Items[i].Enabled := False;
       end
     else
       for i := 0 to FDefaultPopup.Items.Count - 1 do
         FDefaultPopup.Items[i].Enabled := True;
 
-    FDefaultPopup.Popup (Msg.XPos + ClientOrigin.x,
-                         Msg.YPos + ClientOrigin.y);
+    FDefaultPopup.Popup (x + ClientOrigin.x,
+                         y + ClientOrigin.y);
   end;
-
-  inherited;
+    end;
 end;
-{=====}
 
-{$IFNDEF LCL}
-procedure TVpDayView.WMLButtonUp(var Msg: TWMLButtonUp);
-{$ELSE}
-procedure TVpDayView.WMLButtonUp(var Msg: TLMLButtonUp);
-{$ENDIF}
-begin
-  dvMouseDownPoint   := Point(0, 0);
-  dvMouseDown        := false;
-  dvDragging         := false;
-  inherited;
-end;
 {=====}
 
 {$IFNDEF LCL}
@@ -2036,27 +2036,6 @@ begin
       dvSpawnEventEditDialog(True);
     end;
   end;
-end;
-{=====}
-
-{$IFNDEF LCL}
-procedure TVpDayView.WMMouseMove(var Msg : TWMMouseMove);
-{$ELSE}
-procedure TVpDayView.WMMouseMove(var Msg : TLMMouseMove);
-{$ENDIF}
-begin
-
-  if (FActiveEvent <> nil) and (not ReadOnly) then begin
-    if (not dvDragging) and dvMouseDown
-    and ((dvMouseDownPoint.x <> Msg.XPos) or (dvMouseDownPoint.y <> Msg.YPos))
-    then begin
-      dvDragging := true;
-      dvClickTimer.Enabled := false;
-      BeginDrag(true);
-    end;
-  end;
-
-  inherited;
 end;
 {=====}
 
