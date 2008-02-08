@@ -1,127 +1,121 @@
 object TaskEditForm: TTaskEditForm
-  Left = 278
-  Top = 218
-  AutoScroll = False
+  Left = 468
+  Height = 340
+  Top = 333
+  Width = 545
+  HorzScrollBar.Page = 544
+  VertScrollBar.Page = 339
   Caption = 'TaskEditForm'
-  ClientHeight = 313
-  ClientWidth = 537
-  Color = clBtnFace
+  ClientHeight = 340
+  ClientWidth = 545
   Constraints.MinHeight = 340
   Constraints.MinWidth = 545
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
-  Font.Style = []
-  OldCreateOrder = False
-  Position = poScreenCenter
-  Scaled = False
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  Position = poScreenCenter
   object Panel2: TPanel
-    Left = 0
-    Top = 276
-    Width = 537
     Height = 37
+    Top = 303
+    Width = 545
     Align = alBottom
     BevelOuter = bvNone
+    ClientHeight = 37
+    ClientWidth = 545
     TabOrder = 0
-    DesignSize = (
-      537
-      37)
     object ResourceNameLbl: TLabel
       Left = 8
+      Height = 16
       Top = 12
       Width = 100
-      Height = 16
       AutoSize = False
       Caption = 'Resource Name'
-      Font.Charset = ANSI_CHARSET
+      Font.CharSet = ANSI_CHARSET
       Font.Color = clMaroon
       Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
-      ParentFont = False
+      ParentColor = False
     end
     object OKBtn: TButton
-      Left = 380
+      Left = 388
+      Height = 25
       Top = 8
       Width = 75
-      Height = 25
       Anchors = [akTop, akRight]
       Caption = 'OK'
       Default = True
-      TabOrder = 0
       OnClick = OKBtnClick
+      TabOrder = 0
     end
     object CancelBtn: TButton
-      Left = 458
+      Left = 466
+      Height = 25
       Top = 8
       Width = 75
-      Height = 25
       Anchors = [akTop, akRight]
       Cancel = True
       Caption = 'Cancel'
-      TabOrder = 1
       OnClick = CancelBtnClick
+      TabOrder = 1
     end
   end
   object PageControl1: TPageControl
-    Left = 0
-    Top = 0
-    Width = 537
-    Height = 276
+    Height = 303
+    Width = 545
+    TabStop = False
     ActivePage = tabTask
     Align = alClient
+    TabIndex = 0
     TabOrder = 1
-    TabStop = False
     object tabTask: TTabSheet
       Caption = 'Task'
-      DesignSize = (
-        529
-        248)
+      ClientHeight = 277
+      ClientWidth = 537
       object DueDateLbl: TLabel
         Left = 52
+        Height = 14
         Top = 44
-        Width = 47
-        Height = 13
+        Width = 49
         Caption = 'Due date:'
+        ParentColor = False
       end
       object CreatedOnLbl: TLabel
         Left = 52
+        Height = 14
         Top = 69
-        Width = 55
-        Height = 13
+        Width = 59
         Caption = 'Created on:'
+        ParentColor = False
       end
       object CompletedOnLbl: TLabel
         Left = 313
+        Height = 14
         Top = 69
-        Width = 68
-        Height = 13
+        Width = 71
         Caption = 'Completed on:'
+        ParentColor = False
       end
       object Bevel1: TBevel
         Left = 4
+        Height = 2
         Top = 32
         Width = 522
-        Height = 2
-        Anchors = [akLeft, akTop, akRight]
+        Anchors = [akTop, akLeft, akRight]
       end
       object Bevel2: TBevel
         Left = 4
+        Height = 2
         Top = 88
         Width = 522
-        Height = 2
-        Anchors = [akLeft, akTop, akRight]
+        Anchors = [akTop, akLeft, akRight]
       end
       object imgCalendar: TImage
         Left = 8
+        Height = 32
         Top = 38
         Width = 32
-        Height = 32
         AutoSize = True
         Picture.Data = {
           07544269746D6170360C0000424D360C00000000000036000000280000002000
@@ -222,14 +216,15 @@ object TaskEditForm: TTaskEditForm
           D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4
           C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0
           D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8
-          D0D4}
-        Transparent = True
+          D0D4
+        }
+        Transparent = False
       end
       object imgCompleted: TImage
         Left = 272
+        Height = 32
         Top = 38
         Width = 32
-        Height = 32
         AutoSize = True
         Picture.Data = {
           07544269746D617076020000424D760200000000000076000000280000002000
@@ -252,64 +247,42 @@ object TaskEditForm: TTaskEditForm
           3333333333333333333333333307033333333333333333333333333333307033
           3333333333333333333333333333070333333333333333333333333333333070
           3333333333333333333333333333330033333333333333333333333333333333
-          3333}
-        Transparent = True
+          3333
+        }
+        Transparent = False
       end
       object DescriptionEdit: TEdit
         Left = 4
+        Height = 21
         Top = 5
         Width = 522
-        Height = 21
-        Anchors = [akLeft, akTop, akRight]
+        Anchors = [akTop, akLeft, akRight]
         MaxLength = 255
+        OnChange = OnChange
         TabOrder = 0
         Text = 'DescriptionEdit'
-        OnChange = OnChange
-      end
-      object DueDateEdit: TVpDateEdit
-        Left = 120
-        Top = 40
-        Width = 137
-        Height = 21
-        Epoch = 2000
-        PopupCalColors.ActiveDay = clRed
-        PopupCalColors.ColorScheme = cscalWindows
-        PopupCalColors.DayNames = clMaroon
-        PopupCalColors.Days = clBlack
-        PopupCalColors.InactiveDays = clGray
-        PopupCalColors.MonthAndYear = clBlue
-        PopupCalColors.Weekend = clRed
-        PopupCalColors.EventDays = clBlack
-        PopupCalFont.Charset = DEFAULT_CHARSET
-        PopupCalFont.Color = clWindowText
-        PopupCalFont.Height = -11
-        PopupCalFont.Name = 'MS Sans Serif'
-        PopupCalFont.Style = []
-        ReadOnly = False
-        RequiredFields = [rfMonth, rfDay]
-        TabOrder = 1
-        TodayString = '/'
       end
       object CompleteCB: TCheckBox
         Left = 313
+        Height = 19
         Top = 41
-        Width = 136
-        Height = 17
+        Width = 70
         Caption = 'Complete'
         TabOrder = 2
       end
       object DetailsMemo: TMemo
         Left = 4
+        Height = 148
         Top = 96
         Width = 522
-        Height = 147
-        Anchors = [akLeft, akTop, akRight, akBottom]
+        Anchors = [akTop, akLeft, akRight, akBottom]
         Lines.Strings = (
-          'DetailsMemo')
+          'DetailsMemo'
+        )
         MaxLength = 1024
-        ScrollBars = ssVertical
-        TabOrder = 3
         OnChange = OnChange
+        ScrollBars = ssVertical
+        TabOrder = 1
       end
     end
   end

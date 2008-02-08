@@ -34,7 +34,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,
   {$ENDIF}
@@ -238,6 +238,11 @@ procedure TResEditForm.SetControls;
 begin
   OKBtn.Enabled := (DescriptionEdit.Text <> '');
 end;
+
+initialization
+{$IFDEF LCL}
+  {$I vpreseditdlg.lrs}
+{$ENDIF}
 
 end.
   

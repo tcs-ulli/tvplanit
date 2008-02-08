@@ -35,7 +35,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,Messages,
   {$ENDIF}
@@ -47,19 +47,21 @@ type
   { forward declarations }
   TVpNotificationDialog = class;
 
+  { TAlarmNotifyForm }
+
   TAlarmNotifyForm = class(TForm)
-    DismissBtn: TButton;
-    SnoozeBtn: TButton;
-    OpenItemBtn: TButton;
     Bevel1: TBevel;
     Bevel2: TBevel;
-    SubjectCaption: TLabel;
-    NotesCaption: TLabel;
-    SnoozeCaption: TLabel;
-    SubjectEdit: TEdit;
-    NotesMemo: TMemo;
-    SnoozeCombo: TComboBox;
+    DismissBtn: TButton;
     EventDialog: TVpEventEditDialog;
+    NotesCaption: TLabel;
+    NotesMemo: TMemo;
+    OpenItemBtn: TButton;
+    SnoozeBtn: TButton;
+    SnoozeCaption: TLabel;
+    SnoozeCombo: TComboBox;
+    SubjectCaption: TLabel;
+    SubjectEdit: TEdit;
     procedure SnoozeComboChange(Sender: TObject);
     procedure SnoozeBtnClick(Sender: TObject);
     procedure DismissBtnClick(Sender: TObject);
@@ -262,6 +264,11 @@ procedure TAlarmNotifyForm.FormShow(Sender: TObject);
 begin
   OpenItemBtn.SetFocus;
 end;
+
+initialization
+{$IFDEF LCL}
+  {$I vpalarmdlg.lrs}
+{$ENDIF}
 
 end.
  

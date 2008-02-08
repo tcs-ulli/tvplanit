@@ -58,6 +58,8 @@ type
   { TDlgEventEdit }
 
   TDlgEventEdit = class(TForm)
+    AlarmAdvance: TEdit;
+    NotesMemo: TMemo;
     StartDate: TDateEdit;
     EndDate: TDateEdit;
     RepeatUntil: TDateEdit;
@@ -90,9 +92,7 @@ type
     IntervalUpDown: TUpDown;
     AlarmAdvType: TComboBox;
     AdvanceUpDown: TUpDown;
-    AlarmAdvance: {$IFDEF LCL}TEdit{$ELSE}TMaskEdit{$ENDIF};
     CBAllDay: TCheckBox;
-    NotesMemo: TMemo;
     edtUnusedPlaceholder: TEdit;
     imgClock: TImage;
     RecurrenceEndsLbl: TLabel;
@@ -226,8 +226,8 @@ begin
   StartDate.Date := Event.StartTime;
   EndDate.Date := Event.EndTime;
   RepeatUntil.Date := Event.RepeatRangeEnd;
-  StartTime.Text := TimeToStr(Event.StartTime);
-  EndTime.Text := TimeToStr(Event.EndTime);
+  StartTime.Text := FormatDateTime('hh:mm',Event.StartTime);
+  EndTime.Text := FormatDateTime('hh:mm',Event.EndTime);
 
   StartTimeChange(Self);
   CBAllDay.Checked := Event.AllDayEvent;
@@ -697,7 +697,7 @@ begin
 
   if ST > EndDate.Date +
           StrToTime (EndTime.Text) then begin
-  EndTime.Text := TimeToStr(ST + (30/MinutesInDay));
+  EndTime.Text := FormatDateTime('hh:mm',ST + (30/MinutesInDay));
   end;
 end;                                                                     
 
@@ -721,7 +721,7 @@ begin
 
   if ET < StartDate.Date +
           StrToTime (StartTime.Text) then begin
-  StartTime.Text := TimeToStr(ET- (30/MinutesInDay));
+  StartTime.Text := FormatDateTime('hh:mm',ET- (30/MinutesInDay));
   end;
 end;                                                                     
 

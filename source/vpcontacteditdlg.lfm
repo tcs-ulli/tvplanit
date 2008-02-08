@@ -25,8 +25,8 @@ object ContactEditForm: TContactEditForm
     OnChange = tsContactsChange
     object tabMain: TTabSheet
       Caption = '&Main'
-      ClientHeight = 280
-      ClientWidth = 433
+      ClientHeight = 254
+      ClientWidth = 425
       object NameLbl: TLabel
         Left = 8
         Height = 16
@@ -214,6 +214,7 @@ object ContactEditForm: TContactEditForm
         Top = 224
         Width = 121
         AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+        ItemHeight = 13
         MaxLength = 65535
         TabOrder = 11
       end
@@ -223,6 +224,7 @@ object ContactEditForm: TContactEditForm
         Top = 100
         Width = 249
         AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+        ItemHeight = 13
         MaxLength = 65535
         TabOrder = 4
         Visible = False
@@ -242,6 +244,7 @@ object ContactEditForm: TContactEditForm
         AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
+        ItemHeight = 13
         MaxLength = 65535
         OnChange = cboxCountryChange
         TabOrder = 7

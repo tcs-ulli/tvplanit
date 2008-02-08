@@ -34,7 +34,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,Messages,
   {$ENDIF}
@@ -415,6 +415,11 @@ begin
   if Key = VK_ESCAPE then
     actCancel.Execute;
 end;
+
+initialization
+{$IFDEF LCL}
+  {$I vpprtprvdlg.lrs}
+{$ENDIF}
 
 end.
   

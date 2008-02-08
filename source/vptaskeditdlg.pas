@@ -35,7 +35,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,
   {$ENDIF}
@@ -224,6 +224,11 @@ begin
   end;
 end;
 {=====}
+
+initialization
+{$IFDEF LCL}
+  {$I vptaskeditdlg.lrs}
+{$ENDIF}
 
 end.
   

@@ -10,7 +10,7 @@ LazarusResources.Add('TFrmSoundDialog','FORMDATA',[
   +'trol'#12'PageControl1'#6'Height'#3#6#1#5'Width'#3#146#1#7'TabStop'#8#10'Act'
   +'ivePage'#7#9'TabSheet1'#5'Align'#7#8'alClient'#8'TabIndex'#2#0#8'TabOrder'#2
   +#0#0#9'TTabSheet'#9'TabSheet1'#7'Caption'#6#14'Select A Sound'#12'ClientHeig'
-  +'ht'#3#229#0#11'ClientWidth'#3#142#1#0#12'TSpeedButton'#10'PlayButton'#4'Lef'
+  +'ht'#3#236#0#11'ClientWidth'#3#138#1#0#12'TSpeedButton'#10'PlayButton'#4'Lef'
   +'t'#3#204#0#6'Height'#2#22#3'Top'#3#163#0#5'Width'#2#26#5'Color'#7#9'clBtnFa'
   +'ce'#10'Glyph.Data'#10#226#1#0#0#222#1#0#0'BM'#222#1#0#0#0#0#0#0'v'#0#0#0'('
   +#0#0#0'$'#0#0#0#18#0#0#0#1#0#4#0#0#0#0#0'h'#1#0#0#0#0#0#0#0#0#0#0#16#0#0#0#16
@@ -29,12 +29,12 @@ LazarusResources.Add('TFrmSoundDialog','FORMDATA',[
   +'fffffffffffffff'#0#0#9'NumGlyphs'#2#2#7'OnClick'#7#15'PlayButtonClick'#0#0
   +#12'TFileListBox'#12'FileListBox1'#4'Left'#3#204#0#6'Height'#2'y'#3'Top'#2#29
   +#5'Width'#3#185#0#9'Directory'#6#10'D:\lazarus'#10'ItemHeight'#2#13#4'Mask'#6
-  +#5'*.wav'#8'OnChange'#7#18'FileListBox1Change'#8'TabOrder'#2#1#8'TopIndex'#2
-  +#255#0#0#9'TCheckBox'#9'CBDefault'#4'Left'#3#204#0#6'Height'#2#23#3'Top'#2#5
-  +#5'Width'#2'X'#7'Caption'#6#9'CBDefault'#7'OnClick'#7#14'CBDefaultClick'#8'T'
-  +'abOrder'#2#0#0#0#7'TButton'#5'OkBtn'#4'Left'#3#220#0#6'Height'#2#25#3'Top'#3
-  +#205#0#5'Width'#2'K'#7'Caption'#6#5'OkBtn'#7'Default'#9#7'OnClick'#7#10'OkBt'
-  +'nClick'#8'TabOrder'#2#3#0#0#7'TButton'#9'CancelBtn'#4'Left'#3'4'#1#6'Height'
-  +#2#25#3'Top'#3#205#0#5'Width'#2'K'#7'Caption'#6#9'CancelBtn'#7'OnClick'#7#14
-  +'CancelBtnClick'#8'TabOrder'#2#2#0#0#0#0#0
+  +#5'*.wav'#8'OnChange'#7#18'FileListBox1Change'#8'TabOrder'#2#1#0#0#9'TCheckB'
+  +'ox'#9'CBDefault'#4'Left'#3#204#0#6'Height'#2#19#3'Top'#2#5#5'Width'#2'J'#7
+  +'Caption'#6#9'CBDefault'#7'OnClick'#7#14'CBDefaultClick'#8'TabOrder'#2#0#0#0
+  +#7'TButton'#5'OkBtn'#4'Left'#3#220#0#6'Height'#2#25#3'Top'#3#205#0#5'Width'#2
+  +'K'#7'Caption'#6#5'OkBtn'#7'Default'#9#7'OnClick'#7#10'OkBtnClick'#8'TabOrde'
+  +'r'#2#3#0#0#7'TButton'#9'CancelBtn'#4'Left'#3'4'#1#6'Height'#2#25#3'Top'#3
+  +#205#0#5'Width'#2'K'#7'Caption'#6#9'CancelBtn'#7'OnClick'#7#14'CancelBtnClic'
+  +'k'#8'TabOrder'#2#2#0#0#0#0#0
 ]);

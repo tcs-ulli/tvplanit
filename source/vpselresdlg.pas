@@ -32,7 +32,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,
   {$ENDIF}
@@ -75,6 +75,11 @@ procedure TfrmSelectResource.btnEditClick(Sender: TObject);
 begin
   VpResourceEditDialog1.Execute;
 end;
+
+initialization
+{$IFDEF LCL}
+  {$I vpselresdlg.lrs}
+{$ENDIF}
 
 end.
  

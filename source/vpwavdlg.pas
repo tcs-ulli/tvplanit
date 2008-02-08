@@ -36,7 +36,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,LResources,
   {$ELSE}
   Windows,
   {$ENDIF}
@@ -187,6 +187,11 @@ begin
   if Key = VK_ESCAPE then
     Close;
 end;
+
+initialization
+{$IFDEF LCL}
+  {$I vpwavdlg.lrs}
+{$ENDIF}
 
 end.
   
