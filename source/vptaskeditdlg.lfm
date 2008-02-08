@@ -2,12 +2,12 @@ object TaskEditForm: TTaskEditForm
   Left = 468
   Height = 340
   Top = 333
-  Width = 545
-  HorzScrollBar.Page = 544
+  Width = 546
+  HorzScrollBar.Page = 545
   VertScrollBar.Page = 339
   Caption = 'TaskEditForm'
   ClientHeight = 340
-  ClientWidth = 545
+  ClientWidth = 546
   Constraints.MinHeight = 340
   Constraints.MinWidth = 545
   Font.Height = -11
@@ -18,11 +18,11 @@ object TaskEditForm: TTaskEditForm
   object Panel2: TPanel
     Height = 37
     Top = 303
-    Width = 545
+    Width = 546
     Align = alBottom
     BevelOuter = bvNone
     ClientHeight = 37
-    ClientWidth = 545
+    ClientWidth = 546
     TabOrder = 0
     object ResourceNameLbl: TLabel
       Left = 8
@@ -39,7 +39,7 @@ object TaskEditForm: TTaskEditForm
       ParentColor = False
     end
     object OKBtn: TButton
-      Left = 388
+      Left = 389
       Height = 25
       Top = 8
       Width = 75
@@ -50,7 +50,7 @@ object TaskEditForm: TTaskEditForm
       TabOrder = 0
     end
     object CancelBtn: TButton
-      Left = 466
+      Left = 467
       Height = 25
       Top = 8
       Width = 75
@@ -63,7 +63,7 @@ object TaskEditForm: TTaskEditForm
   end
   object PageControl1: TPageControl
     Height = 303
-    Width = 545
+    Width = 546
     TabStop = False
     ActivePage = tabTask
     Align = alClient
@@ -72,7 +72,7 @@ object TaskEditForm: TTaskEditForm
     object tabTask: TTabSheet
       Caption = 'Task'
       ClientHeight = 277
-      ClientWidth = 537
+      ClientWidth = 538
       object DueDateLbl: TLabel
         Left = 52
         Height = 14
@@ -101,14 +101,14 @@ object TaskEditForm: TTaskEditForm
         Left = 4
         Height = 2
         Top = 32
-        Width = 522
+        Width = 523
         Anchors = [akTop, akLeft, akRight]
       end
       object Bevel2: TBevel
         Left = 4
         Height = 2
         Top = 88
-        Width = 522
+        Width = 523
         Anchors = [akTop, akLeft, akRight]
       end
       object imgCalendar: TImage
@@ -255,7 +255,7 @@ object TaskEditForm: TTaskEditForm
         Left = 4
         Height = 21
         Top = 5
-        Width = 522
+        Width = 523
         Anchors = [akTop, akLeft, akRight]
         MaxLength = 255
         OnChange = OnChange
@@ -274,7 +274,7 @@ object TaskEditForm: TTaskEditForm
         Left = 4
         Height = 148
         Top = 96
-        Width = 522
+        Width = 523
         Anchors = [akTop, akLeft, akRight, akBottom]
         Lines.Strings = (
           'DetailsMemo'

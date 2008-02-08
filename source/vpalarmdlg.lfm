@@ -1,13 +1,13 @@
 object AlarmNotifyForm: TAlarmNotifyForm
-  Left = 559
-  Height = 207
-  Top = 368
-  Width = 408
-  HorzScrollBar.Page = 407
-  VertScrollBar.Page = 206
+  Left = 504
+  Height = 208
+  Top = 335
+  Width = 406
+  HorzScrollBar.Page = 405
+  VertScrollBar.Page = 207
   Caption = 'Reminder'
-  ClientHeight = 207
-  ClientWidth = 408
+  ClientHeight = 208
+  ClientWidth = 406
   Color = clInfoBk
   KeyPreview = True
   OnKeyDown = FormKeyDown

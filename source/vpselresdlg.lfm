@@ -2,12 +2,12 @@ object frmSelectResource: TfrmSelectResource
   Left = 303
   Height = 162
   Top = 202
-  Width = 284
-  HorzScrollBar.Page = 283
+  Width = 274
+  HorzScrollBar.Page = 273
   VertScrollBar.Page = 161
   Caption = 'Select a Resource'
   ClientHeight = 162
-  ClientWidth = 284
+  ClientWidth = 274
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Position = poDesktopCenter
