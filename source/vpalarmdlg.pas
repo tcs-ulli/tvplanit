@@ -121,15 +121,17 @@ var
   AlarmNotifyForm: TAlarmNotifyForm;
 begin
   if (Event <> nil) and (not Event.AlertDisplayed) then begin
-    Application.CreateForm(TAlarmNotifyForm, AlarmNotifyForm);
+   AlarmNotifyForm := TAlarmNotifyForm.Create(Self);
     try
-      DoFormPlacement(AlarmNotifyForm);
-      AlarmNotifyForm.Color := BackgroundColor;
-      AlarmNotifyForm.DataStore := DataStore;
-      AlarmNotifyForm.Event := Event;
-      AlarmNotifyForm.PopulateSelf;
-      Event.AlertDisplayed := true;
       try
+        Event.AlertDisplayed := true;
+//        DoFormPlacement(AlarmNotifyForm);
+        AlarmNotifyForm.Color := BackgroundColor;
+        AlarmNotifyForm.DataStore := DataStore;
+        AlarmNotifyForm.Event := Event;
+        AlarmNotifyForm.PopulateSelf;
+        AlarmNotifyForm.Width := 410;
+        AlarmNotifyForm.Height := 210;
         AlarmNotifyForm.ShowModal;
       finally
         Event.AlertDisplayed := false;

@@ -347,8 +347,6 @@ type
     FLocalization     : TVpLocalization;
     FLocalizationFile : string;
     FDefaultCountry   : string;
-
-
   protected{private}
     DependentList: TList;
     procedure Attach (Sender : TComponent);
@@ -363,32 +361,20 @@ type
     destructor Destroy; override;
     function GetDependentList : TList;
     procedure LoadLocalizationInfo (const FileName : string);
-    procedure Notify (Sender: TComponent; NotificationType: TVpNotificationType;
-      const Value: Variant);
-    procedure TriggerOnGetVariable (Sender  : TObject; VarName: string;
-      Found: Boolean;  var Value: string; var Change: TVpChangeVar);
-    procedure TriggerOnPageEnd (Sender: TObject; PageNum: Integer;
-      ADate: TDateTime; LastPage: Boolean);
-    procedure TriggerOnPageStart (Sender: TObject; PageNum: Integer;
-      ADate: TDateTime);
-
+    procedure Notify (Sender: TComponent; NotificationType: TVpNotificationType; const Value: Variant);
+    procedure TriggerOnGetVariable (Sender  : TObject; VarName: string; Found: Boolean;  var Value: string; var Change: TVpChangeVar);
+    procedure TriggerOnPageEnd (Sender: TObject; PageNum: Integer; ADate: TDateTime; LastPage: Boolean);
+    procedure TriggerOnPageStart (Sender: TObject; PageNum: Integer; ADate: TDateTime);
     property Localization : TVpLocalization read FLocalization write FLocalization;
-    
   published
     property DataStore: TVpCustomDataStore read FDataStore write SetDataStore;
-    property DefaultCountry : string
-             read FDefaultCountry write SetDefaultCountry;
-    property LocalizationFile : string 
-             read FLocalizationFile write SetLocalizationFile;
+    property DefaultCountry : string read FDefaultCountry write SetDefaultCountry;
+    property LocalizationFile : string read FLocalizationFile write SetLocalizationFile;
     property Printer : TVpPrinter read FPrinter write SetPrinter;
-    property OnGetVariable : TVpOnGetVariableEvent
-      read FOnGetVariable write FOnGetVariable;
-    property OnNoLocalizationFile : TVpNoLocalizationFile                
-             read FOnNoLocalizationFile write FOnNoLocalizationFile;     
-    property OnPageStart : TVpOnPageStartEvent
-      read FOnPageStart write FOnPageStart;
-    property OnPageEnd : TVpOnPageEndEvent
-      read FOnPageEnd write FOnPageEnd;
+    property OnGetVariable : TVpOnGetVariableEvent read FOnGetVariable write FOnGetVariable;
+    property OnNoLocalizationFile : TVpNoLocalizationFile read FOnNoLocalizationFile write FOnNoLocalizationFile;
+    property OnPageStart : TVpOnPageStartEvent read FOnPageStart write FOnPageStart;
+    property OnPageEnd : TVpOnPageEndEvent read FOnPageEnd write FOnPageEnd;
   end;
 
 

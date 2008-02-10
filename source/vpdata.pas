@@ -171,8 +171,7 @@ type
   public
     constructor Create(Owner: TVpResource);
     destructor Destroy; override;
-    function AddEvent(RecordID: Integer; StartTime,
-      EndTime: TDateTime): TVpEvent;
+    function AddEvent(RecordID: Integer; StartTime, EndTime: TDateTime): TVpEvent;
     procedure DeleteEvent(Event: TVpEvent);
     function GetEvent(Index: Integer): TVpEvent;
     function RepeatsOn(Event: TVpEvent; Day: TDateTime): Boolean;
@@ -242,45 +241,28 @@ type
   public
     constructor Create(Owner: TVpSchedule);
     destructor Destroy; override;
-    property AlarmWavPath: string
-      read FDingPath write SetDingPath;
-    property AlertDisplayed: Boolean
-      read FAlertDisplayed write FAlertDisplayed;
-    property AllDayEvent: Boolean
-      read FAllDayEvent write SetAllDayEvent;
-    property Changed: Boolean
-      read FChanged write SetChanged;
-    property Deleted: Boolean
-      read FDeleted write SetDeleted;
-    property ItemIndex: Integer
-      read FItemIndex;
-    property RecordID : Integer
-      read FRecordID write SetRecordID;
-    property StartTime : TDateTime
-      read FStartTime write SetStartTime;
-    property EndTime : TDateTime
-      read FEndTime write SetEndTime;
-    property Description : string
-      read FDescription write SetDescription;
-    property Note : string
-      read FNote write SetNote;
-    property Category : Integer
-      read FCategory write SetCategory;
-    property AlarmSet : Boolean
-      read FAlarmSet write SetAlarmSet;
-    property AlarmAdv : Integer
-      read FAlarmAdv write SetAlarmAdv;
-    property Loading : Boolean
-      read FLoading write FLoading;
+    property AlarmWavPath: string read FDingPath write SetDingPath;
+    property AlertDisplayed: Boolean read FAlertDisplayed write FAlertDisplayed;
+    property AllDayEvent: Boolean read FAllDayEvent write SetAllDayEvent;
+    property Changed: Boolean read FChanged write SetChanged;
+    property Deleted: Boolean read FDeleted write SetDeleted;
+    property ItemIndex: Integer read FItemIndex;
+    property RecordID : Integer read FRecordID write SetRecordID;
+    property StartTime : TDateTime read FStartTime write SetStartTime;
+    property EndTime : TDateTime read FEndTime write SetEndTime;
+    property Description : string read FDescription write SetDescription;
+    property Note : string read FNote write SetNote;
+    property Category : Integer read FCategory write SetCategory;
+    property AlarmSet : Boolean read FAlarmSet write SetAlarmSet;
+    property AlarmAdv : Integer read FAlarmAdv write SetAlarmAdv;
+    property Loading : Boolean read FLoading write FLoading;
     { 0=Minutes, 1=Hours, 2=Days   }
-    property AlarmAdvType : TVpAlarmAdvType
-      read FAlarmAdvType write SetAlarmAdvType;
+    property AlarmAdvType : TVpAlarmAdvType read FAlarmAdvType write SetAlarmAdvType;
     property SnoozeTime : TDateTime read FSnoozeTime write SetSnoozeTime;
     { rtNone, rtDaily, rtWeekly, rtMonthlyByDay, rtMonthlyByDate, }
     { rtYearlyByDay, rtYearlyByDate, rtCustom                     }
     property RepeatCode   : TVpRepeatType read FRepeatCode write SetRepeatCode;
-    property RepeatRangeEnd: TDateTime
-      read FRepeatRangeEnd write SetRepeatRangeEnd;
+    property RepeatRangeEnd: TDateTime read FRepeatRangeEnd write SetRepeatRangeEnd;
     { Custom Repeat Interval in seconds }
     { is Zero if IntervalCode <> 7      }
     property CustInterval : Integer read FCustInterval write SetCustInterval;

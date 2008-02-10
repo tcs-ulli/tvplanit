@@ -370,6 +370,7 @@ object DlgEventEdit: TDlgEventEdit
       Top = 85
       Width = 90
       Caption = 'All Day Event'
+      OnClick = CBAllDayClick
       TabOrder = 2
     end
     object edtUnusedPlaceholder: TEdit

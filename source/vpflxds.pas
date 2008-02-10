@@ -34,7 +34,12 @@ unit VpFlxDS;
 interface
 
 uses
-  Windows, Classes, Dialogs, SysUtils, Db, DbTables,
+  {$IFDEF LCL}
+  LMessages,LCLProc,LCLIntf,
+  {$ELSE}
+  Windows,
+  {$ENDIF}
+  Classes, Dialogs, SysUtils, Db,
   VpBase, VpData, VpSR, VpDBDS, VpBaseDS, VpException;
 
 type
