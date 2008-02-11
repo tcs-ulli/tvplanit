@@ -125,13 +125,11 @@ begin
     try
       try
         Event.AlertDisplayed := true;
-//        DoFormPlacement(AlarmNotifyForm);
+        DoFormPlacement(AlarmNotifyForm);
         AlarmNotifyForm.Color := BackgroundColor;
         AlarmNotifyForm.DataStore := DataStore;
         AlarmNotifyForm.Event := Event;
         AlarmNotifyForm.PopulateSelf;
-        AlarmNotifyForm.Width := 410;
-        AlarmNotifyForm.Height := 210;
         AlarmNotifyForm.ShowModal;
       finally
         Event.AlertDisplayed := false;
@@ -264,6 +262,8 @@ end;
 {=====}
 procedure TAlarmNotifyForm.FormShow(Sender: TObject);
 begin
+  Self.Width := 410;
+  Self.Height := 210;
   OpenItemBtn.SetFocus;
 end;
 

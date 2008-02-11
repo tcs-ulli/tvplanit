@@ -180,12 +180,12 @@ begin
   else
     Form.BorderStyle:= bsDialog;
 
-  if (Screen.ActiveForm <> nil)
-  and(Screen.ActiveForm.FormStyle = fsStayOnTop) then
+  if  (Screen.ActiveForm <> nil)
+  and (Screen.ActiveForm.FormStyle = fsStayOnTop) then
     Form.FormStyle := fsStayOnTop;
 
-  Form.Height := FPlacement.Height;
-  Form.Width  := FPlacement.Width;
+//  Form.Height := FPlacement.Height;
+//  Form.Width  := FPlacement.Width;
 
   {set position}
   case FPlacement.Position of

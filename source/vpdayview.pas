@@ -1305,13 +1305,12 @@ end;
 {=====}
 
 procedure TVpDayView.DoStartDrag(var DragObject: TDragObject);
-begin
+begin exit;
   DvDragStartTime := 0.0;
-
   if ReadOnly then
     Exit;
   if FActiveEvent <> nil then begin
-    { Set the time from which this event was dragged }
+    // Set the time from which this event was dragged
     DvDragStartTime := trunc(Date + ActiveCol)
       + dvLineMatrix[ActiveCol, ActiveRow].Time;
 
@@ -1324,7 +1323,7 @@ end;
 {=====}
 
 procedure TVpDayView.DoEndDrag(Target: TObject; X, Y: Integer);
-begin
+begin exit;
   if ReadOnly then
     Exit;
   TVpEventDragObject(Target).Free;
@@ -1333,7 +1332,7 @@ end;
 
 procedure TVpDayView.DragOver(Source: TObject; X, Y: Integer; State: TDragState;
   var Accept: Boolean);
-begin
+begin exit;
   if ReadOnly then begin
     Accept := False;
     Exit;
@@ -1355,7 +1354,7 @@ var
   DragToTime  : TDateTime;
   i           : Integer;                                                 
 
-begin
+begin exit;
   if ReadOnly then
     Exit;
   Event := TVpEventDragObject(Source).Event;
