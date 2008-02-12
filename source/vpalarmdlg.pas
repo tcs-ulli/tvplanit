@@ -50,18 +50,15 @@ type
   { TAlarmNotifyForm }
 
   TAlarmNotifyForm = class(TForm)
-    Bevel1: TBevel;
-    Bevel2: TBevel;
     DismissBtn: TButton;
     EventDialog: TVpEventEditDialog;
-    NotesCaption: TLabel;
-    NotesMemo: TMemo;
+    Image1: TImage;
+    lSubject: TLabel;
+    lNotes: TLabel;
     OpenItemBtn: TButton;
     SnoozeBtn: TButton;
     SnoozeCaption: TLabel;
     SnoozeCombo: TComboBox;
-    SubjectCaption: TLabel;
-    SubjectEdit: TEdit;
     procedure SnoozeComboChange(Sender: TObject);
     procedure SnoozeBtnClick(Sender: TObject);
     procedure DismissBtnClick(Sender: TObject);
@@ -149,14 +146,14 @@ procedure TAlarmNotifyForm.PopulateSelf;
 begin
   if Event <> nil then begin
     Caption := RSReminder;
-    SubjectCaption.Caption := RSSubjectCaption;
-    NotesCaption.Caption := RSNotesCaption;
+//    SubjectCaption.Caption := RSSubjectCaption;
+//    NotesCaption.Caption := RSNotesCaption;
     SnoozeCaption.Caption := RSSnoozeCaption;
     DismissBtn.Caption := RSDismissBtn;
     SnoozeBtn.Caption := RSSnoozeBtn;
     OpenItemBtn.Caption := RSOpenItemBtn;
-    NotesMemo.Text := Event.Note;
-    SubjectEdit.Text := Event.Description;
+    lNotes.Caption := Event.Note;
+    lSubject.Caption := Event.Description;
 
     if Now > Event.StartTime then
       Self.Caption := RSOverdue + ' : '
