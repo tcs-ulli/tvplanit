@@ -1,15 +1,15 @@
 object AlarmNotifyForm: TAlarmNotifyForm
-  Left = 266
-  Height = 205
-  Top = 174
-  Width = 407
-  HorzScrollBar.Page = 406
-  VertScrollBar.Page = 204
+  Left = 359
+  Height = 197
+  Top = 292
+  Width = 400
+  HorzScrollBar.Page = 399
+  VertScrollBar.Page = 196
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Reminder'
-  ClientHeight = 205
-  ClientWidth = 407
+  ClientHeight = 197
+  ClientWidth = 400
   Color = clWindow
   KeyPreview = True
   OnKeyDown = FormKeyDown
@@ -26,80 +26,55 @@ object AlarmNotifyForm: TAlarmNotifyForm
     ParentColor = False
   end
   object lSubject: TLabel
-    Left = 48
+    Left = 24
     Height = 14
-    Top = 8
+    Top = 32
     Width = 47
     Caption = 'lSubject'
     Font.Style = [fsBold]
     ParentColor = False
   end
   object lNotes: TLabel
-    Left = 48
-    Height = 96
-    Top = 32
-    Width = 344
+    Left = 24
+    Height = 64
+    Top = 64
+    Width = 368
     AutoSize = False
     Caption = 'lNotes'
     ParentColor = False
     WordWrap = True
   end
-  object Image1: TImage
-    Left = 5
-    Height = 18
+  object lTime: TLabel
+    Left = 24
+    Height = 14
     Top = 8
-    Width = 19
-    Picture.Data = {
-      1754506F727461626C654E6574776F726B47726170686963CE02000089504E47
-      0D0A1A0A0000000D49484452000000100000001008060000001FF3FF61000002
-      954944415478DA8593EF4B535118C79D0E7F202AFE405F280A09C359126EAFCA
-      5E0AF50F0441F5A277516FA3222D4C8D0A419A600582A6F8A2985E119D08DEB9
-      F6C3EEE64A436A53F7C3ADC5B4E9EE4ABBF3CED9BE9D73B75961D685EF7DEE39
-      CFF97ECEF31CCECD009041451E9952A96CD66834F30A85E21C19CBE95C4A7295
-      4A75A6AFAF8FA36BE8DC818FBEDC247044769D0EC16010B6890969EC4E897E2F
-      4C4F4BB977535307B9D4C619323A58CAC981C362412010C04712DF6765219C99
-      2969512683636E4ECAD1358B2940AABA2460353F1FCCE0207C3E1F9881012C94
-      95C15F52027F6121DEE6E581E9EF4FE64874FE0DB05954047D5D1D9E575581AD
-      A981A7BA1A6B9595F09697C34940BA8202F4E4E662323B1B4152D121C04E6929
-      BE34356143ADC67A43030204E6AFADC51A017908C85D510117A9CA5D5C8CB05C
-      FE27C066B3617F7FFF486DAF7308CCDF85B01DA20727CD51CF9100411060B7DB
-      C1F33CEC360B56D8EB08BBB4D8740E219148FC1F40CD63636388C7E3082DBF24
-      C661C4BFBBB13279093B2107445184D56A3D0CA0863484611808BC97982E43DC
-      9C8418EC06EFD1C1A36F25956D1D0D488B6146F189EBC2D6CA08C4403B4C8FD4
-      D80B8F60B1BF19CE37AFC071DCBF01D3231AACE95B100B0D21EABE02D3C346EC
-      FA6FE1AB770A0B2FCEC36EB5E0E02A530031FD489BF762BB581EBF8A0839B85D
-      DF0D08AB1792729176824FE037F6C0A66DFB056059169148E41B85D04A369646
-      E1377523B6F14CDA5D705D242DA8A418F55E43747D1CA6C7A761BC7FBC5E02F4
-      F6F6C26030C06C364BB23E3D8BE89607315E0F3144CE20A4FD4DA388EF7CC067
-      EB30665B145A09D0D9D96921BF31D232769D223DAB617CA0C2EB8E4618DA4F62
-      B6AD01FA7B27C0B6D663E68E1233B71509F6E631F34F6485AC66C360414B0000
-      000049454E44AE426082
-    }
-    Transparent = False
+    Width = 25
+    Caption = 'lTime'
+    ParentColor = False
   end
   object DismissBtn: TButton
-    Left = 229
+    Left = 216
     Height = 25
     Top = 168
-    Width = 75
+    Width = 88
     Caption = 'DismissBtn'
     OnClick = DismissBtnClick
     TabOrder = 0
   end
   object SnoozeBtn: TButton
-    Left = 320
+    Left = 312
     Height = 25
     Top = 136
-    Width = 75
+    Width = 83
     Caption = 'SnoozeBtn'
     OnClick = SnoozeBtnClick
     TabOrder = 1
   end
   object OpenItemBtn: TButton
-    Left = 320
+    Left = 312
     Height = 25
     Top = 168
-    Width = 75
+    Width = 83
     Caption = 'OpenItemBtn'
     Default = True
     OnClick = OpenItemBtnClick
@@ -147,7 +122,7 @@ object AlarmNotifyForm: TAlarmNotifyForm
     Placement.Left = 10
     Placement.Height = 412
     Placement.Width = 705
-    left = 300
-    top = 36
+    left = 360
+    top = 8
   end
 end

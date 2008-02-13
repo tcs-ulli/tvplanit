@@ -1,66 +1,36 @@
 { Das ist eine automatisch erzeugte Lazarus-Ressourcendatei }
 
 LazarusResources.Add('TAlarmNotifyForm','FORMDATA',[
-  'TPF0'#16'TAlarmNotifyForm'#15'AlarmNotifyForm'#4'Left'#3#10#1#6'Height'#3#205
-  +#0#3'Top'#3#174#0#5'Width'#3#151#1#18'HorzScrollBar.Page'#3#150#1#18'VertScr'
-  +'ollBar.Page'#3#204#0#11'BorderIcons'#11#12'biSystemMenu'#0#11'BorderStyle'#7
-  +#8'bsDialog'#7'Caption'#6#8'Reminder'#12'ClientHeight'#3#205#0#11'ClientWidt'
-  +'h'#3#151#1#5'Color'#7#8'clWindow'#10'KeyPreview'#9#9'OnKeyDown'#7#11'FormKe'
+  'TPF0'#16'TAlarmNotifyForm'#15'AlarmNotifyForm'#4'Left'#3'g'#1#6'Height'#3#197
+  +#0#3'Top'#3'$'#1#5'Width'#3#144#1#18'HorzScrollBar.Page'#3#143#1#18'VertScro'
+  +'llBar.Page'#3#196#0#11'BorderIcons'#11#12'biSystemMenu'#0#11'BorderStyle'#7
+  +#8'bsDialog'#7'Caption'#6#8'Reminder'#12'ClientHeight'#3#197#0#11'ClientWidt'
+  +'h'#3#144#1#5'Color'#7#8'clWindow'#10'KeyPreview'#9#9'OnKeyDown'#7#11'FormKe'
   +'yDown'#6'OnShow'#7#8'FormShow'#8'Position'#7#9'poDefault'#0#6'TLabel'#13'Sn'
   +'oozeCaption'#4'Left'#2'0'#6'Height'#2#13#3'Top'#3#136#0#5'Width'#2'N'#9'Ali'
   +'gnment'#7#14'taRightJustify'#8'AutoSize'#8#7'Caption'#6#13'SnoozeCaption'#11
-  +'ParentColor'#8#0#0#6'TLabel'#8'lSubject'#4'Left'#2'0'#6'Height'#2#14#3'Top'
-  +#2#8#5'Width'#2'/'#7'Caption'#6#8'lSubject'#10'Font.Style'#11#6'fsBold'#0#11
-  +'ParentColor'#8#0#0#6'TLabel'#6'lNotes'#4'Left'#2'0'#6'Height'#2'`'#3'Top'#2
-  +' '#5'Width'#3'X'#1#8'AutoSize'#8#7'Caption'#6#6'lNotes'#11'ParentColor'#8#8
-  +'WordWrap'#9#0#0#6'TImage'#6'Image1'#4'Left'#2#5#6'Height'#2#18#3'Top'#2#8#5
-  +'Width'#2#19#12'Picture.Data'#10#234#2#0#0#23'TPortableNetworkGraphic'#206#2
-  +#0#0#137'PNG'#13#10#26#10#0#0#0#13'IHDR'#0#0#0#16#0#0#0#16#8#6#0#0#0#31#243
-  +#255'a'#0#0#2#149'IDATx'#218#133#147#239'KSQ'#24#199#157#14' *'#254'@_('#10
-  +#9#195'Y'#18'n'#175#202'^'#10#245#15#4'A'#245#162'wQo'#163'"-L'#141#10'A'#154
-  +'`'#5#130#166#248#162#152'^'#17#157#8#222#185#246#195#238#230'JCjS'#247#195
-  +#173#197#180#233#238'J'#187#243#206#217#190#157's'#183'Ya'#214#133#239'}'#238
-  +'9'#207#249'~'#206#243#28#206#205#0#144'AE'#30#153'R'#169'l'#214'h4'#243#10
-  +#133#226#28#25#203#233'\Jr'#149'Ju'#166#175#175#143#163'k'#232#220#129#143
-  +#190#220'$pDv'#157#14#193'`'#16#182#137#9'i'#236'N'#137'~/LOK'#185'wSS'#7#185
-  +#212#198#25'2:X'#202#201#129#195'bA '#16#192'G'#18#223'ge!'#156#153')iQ&'#131
-  +'cnN'#202#209'5'#139')@'#170#186'$`5?'#31#204#224' |>'#31#152#129#1','#148
-  +#149#193'_R'#2'a!'#222#230#229#129#233#239'O'#230'Ht'#254#13#176'YT'#4'}]'
-  +#29#158'WU'#129#173#169#129#167#186#26'k'#149#149#240#150#151#195'I@'#186#130
-  +#2#244#228#230'b2;'#27'AR'#209'!'#192'Ni)'#190'45aC'#173#198'zC'#3#2#4#230
-  +#175#173#197#26#1'y'#8#200']Q'#1#23#169#202']\'#140#176'\'#254''''#192'f'#179
-  +'a'#255'Hm'#175's'#8#204#223#133#176#29#162#7''''#205'Q'#207#145#0'A'#16'`'
-  +#183#219#193#243'<'#236'6'#11'V'#216#235#8#187#180#216't'#14'!'#145'H'#252#31
-  +'@'#205'ccc'#136#199#227#8'-'#191'$'#198'a'#196#191#187#177'2y'#9';!'#7'DQ'
-  +#132#213'j='#12#160#134'4'#132'a'#24#8#188#151#152'.C'#220#156#132#24#236#6
-  +#239#209#193#163'o%'#149'm'#29#13'H'#139'aF'#241#137#235#194#214#202#8#196'@'
-  +';L'#143#212#216#11#143'`'#177#191#25#206'7'#175#192'q'#220#191#1#211'#'#26
-  +#172#233'['#16#11#13'!'#234#190#2#211#195'F'#236#250'o'#225#171'w'#10#11'/'
-  +#206#195'n'#181#224#224'*S'#0'1'#253'H'#155#247'b'#187'X'#30#191#138#8'9'#184
-  +']'#223#13#8#171#23#146'r'#145'v'#130'O'#224'7'#246#192#166'm'#251#5'`Y'#22
-  +#145'H'#228#27#133#208'J6'#150'F'#225'7u#'#182#241'L'#218']p]$-'#168#164#24
-  +#245'^Ct}'#28#166#199#167'a'#188''#188'^'#2#244#246#246#194'`0'#192'l6K'#178
-  +'>='#139#232#150#7'1^'#15'1D'#206' '#164#253'M'#163#136#239'|'#192'g'#235'0f'
-  +'['#20'Z'#9#208#217#217'i!'#191'1'#210'2v'#157'"='#171'a|'#160#194#235#142'F'
-  +#24#218'Ob'#182#173#1#250'{'''#192#182#214'c'#230#142#18'3'#183#21#9#246#230
-  +'1'#243'Od'#133#172'f'#195'`AK'#0#0#0#0'IEND'#174'B`'#130#11'Transparent'#8#0
-  +#0#7'TButton'#10'DismissBtn'#4'Left'#3#229#0#6'Height'#2#25#3'Top'#3#168#0#5
-  +'Width'#2'K'#7'Caption'#6#10'DismissBtn'#7'OnClick'#7#15'DismissBtnClick'#8
-  +'TabOrder'#2#0#0#0#7'TButton'#9'SnoozeBtn'#4'Left'#3'@'#1#6'Height'#2#25#3'T'
-  +'op'#3#136#0#5'Width'#2'K'#7'Caption'#6#9'SnoozeBtn'#7'OnClick'#7#14'SnoozeB'
-  +'tnClick'#8'TabOrder'#2#1#0#0#7'TButton'#11'OpenItemBtn'#4'Left'#3'@'#1#6'He'
-  +'ight'#2#25#3'Top'#3#168#0#5'Width'#2'K'#7'Caption'#6#11'OpenItemBtn'#7'Defa'
-  +'ult'#9#7'OnClick'#7#16'OpenItemBtnClick'#8'TabOrder'#2#2#0#0#9'TComboBox'#11
-  +'SnoozeCombo'#4'Left'#3#136#0#6'Height'#2#21#3'Top'#3#136#0#5'Width'#3#168#0
-  +#16'AutoCompleteText'#11#22'cbactEndOfLineComplete'#20'cbactSearchAscending'
-  +#0#10'ItemHeight'#2#13#13'Items.Strings'#1#6#9'5 Minutes'#6#10'10 Minutes'#6
-  +#10'15 Minutes'#6#10'30 Minutes'#6#10'45 Minutes'#6#7'1 Hours'#6#7'2 Hours'#6
-  +#7'3 Hours'#6#7'4 Hours'#6#7'5 Hours'#6#7'6 Hours'#6#7'7 Hours'#6#7'8 Hours'
-  +#6#6'1 Days'#6#6'2 Days'#6#6'3 Days'#6#6'4 Days'#6#6'5 Days'#6#6'6 Days'#6#6
-  +'1 Week'#0#8'OnChange'#7#17'SnoozeComboChange'#11'ParentColor'#9#5'Style'#7
-  +#14'csDropDownList'#8'TabOrder'#2#3#0#0#18'TVpEventEditDialog'#11'EventDialo'
-  +'g'#7'Version'#6#5'v1.03'#10'TimeFormat'#7#8'tf24Hour'#18'Placement.Position'
-  +#7#11'mpCenterTop'#13'Placement.Top'#2#10#14'Placement.Left'#2#10#16'Placeme'
-  +'nt.Height'#3#156#1#15'Placement.Width'#3#193#2#4'left'#3','#1#3'top'#2'$'#0
-  +#0#0
+  +'ParentColor'#8#0#0#6'TLabel'#8'lSubject'#4'Left'#2#24#6'Height'#2#14#3'Top'
+  +#2' '#5'Width'#2'/'#7'Caption'#6#8'lSubject'#10'Font.Style'#11#6'fsBold'#0#11
+  +'ParentColor'#8#0#0#6'TLabel'#6'lNotes'#4'Left'#2#24#6'Height'#2'@'#3'Top'#2
+  +'@'#5'Width'#3'p'#1#8'AutoSize'#8#7'Caption'#6#6'lNotes'#11'ParentColor'#8#8
+  +'WordWrap'#9#0#0#6'TLabel'#5'lTime'#4'Left'#2#24#6'Height'#2#14#3'Top'#2#8#5
+  +'Width'#2#25#7'Caption'#6#5'lTime'#11'ParentColor'#8#0#0#7'TButton'#10'Dismi'
+  +'ssBtn'#4'Left'#3#216#0#6'Height'#2#25#3'Top'#3#168#0#5'Width'#2'X'#7'Captio'
+  +'n'#6#10'DismissBtn'#7'OnClick'#7#15'DismissBtnClick'#8'TabOrder'#2#0#0#0#7
+  +'TButton'#9'SnoozeBtn'#4'Left'#3'8'#1#6'Height'#2#25#3'Top'#3#136#0#5'Width'
+  +#2'S'#7'Caption'#6#9'SnoozeBtn'#7'OnClick'#7#14'SnoozeBtnClick'#8'TabOrder'#2
+  +#1#0#0#7'TButton'#11'OpenItemBtn'#4'Left'#3'8'#1#6'Height'#2#25#3'Top'#3#168
+  +#0#5'Width'#2'S'#7'Caption'#6#11'OpenItemBtn'#7'Default'#9#7'OnClick'#7#16'O'
+  +'penItemBtnClick'#8'TabOrder'#2#2#0#0#9'TComboBox'#11'SnoozeCombo'#4'Left'#3
+  +#136#0#6'Height'#2#21#3'Top'#3#136#0#5'Width'#3#168#0#16'AutoCompleteText'#11
+  +#22'cbactEndOfLineComplete'#20'cbactSearchAscending'#0#10'ItemHeight'#2#13#13
+  +'Items.Strings'#1#6#9'5 Minutes'#6#10'10 Minutes'#6#10'15 Minutes'#6#10'30 M'
+  +'inutes'#6#10'45 Minutes'#6#7'1 Hours'#6#7'2 Hours'#6#7'3 Hours'#6#7'4 Hours'
+  +#6#7'5 Hours'#6#7'6 Hours'#6#7'7 Hours'#6#7'8 Hours'#6#6'1 Days'#6#6'2 Days'
+  +#6#6'3 Days'#6#6'4 Days'#6#6'5 Days'#6#6'6 Days'#6#6'1 Week'#0#8'OnChange'#7
+  +#17'SnoozeComboChange'#11'ParentColor'#9#5'Style'#7#14'csDropDownList'#8'Tab'
+  +'Order'#2#3#0#0#18'TVpEventEditDialog'#11'EventDialog'#7'Version'#6#5'v1.03'
+  +#10'TimeFormat'#7#8'tf24Hour'#18'Placement.Position'#7#11'mpCenterTop'#13'Pl'
+  +'acement.Top'#2#10#14'Placement.Left'#2#10#16'Placement.Height'#3#156#1#15'P'
+  +'lacement.Width'#3#193#2#4'left'#3'h'#1#3'top'#2#8#0#0#0
 ]);

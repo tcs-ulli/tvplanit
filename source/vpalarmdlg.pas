@@ -52,7 +52,7 @@ type
   TAlarmNotifyForm = class(TForm)
     DismissBtn: TButton;
     EventDialog: TVpEventEditDialog;
-    Image1: TImage;
+    lTime: TLabel;
     lSubject: TLabel;
     lNotes: TLabel;
     OpenItemBtn: TButton;
@@ -154,6 +154,7 @@ begin
     OpenItemBtn.Caption := RSOpenItemBtn;
     lNotes.Caption := Event.Note;
     lSubject.Caption := Event.Description;
+    lTime.caption := dateTimeToStr(Event.StartTime)+' - '+dateTimeToStr(Event.EndTime);
 
     if Now > Event.StartTime then
       Self.Caption := RSOverdue + ' : '
@@ -228,7 +229,24 @@ end;
 
 procedure TAlarmNotifyForm.DismissBtnClick(Sender: TObject);
 begin
-  Event.AlarmSet := false;
+  if Event.RepeatCode = rtNone then
+    Event.AlarmSet := false
+  else
+    begin
+      SnoozeDelay := 0;
+      case Event.RepeatCode of
+      rtDaily:SnoozeDelay := 1.0;
+      rtWeekly:SnoozeDelay := 7.0;
+//TODO:      rtMonthlyByDay:
+//TODO:      rtMonthlyByDate:
+//TODO:      rtYearlyByDay:
+//TODO:      rtYearlyByDate:
+//TODO:      rtCustom:
+      else
+        Event.AlarmSet := false
+      end;
+      CalcSnooze;
+    end;
   Close;
 end;
 {=====}
