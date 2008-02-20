@@ -235,7 +235,7 @@ begin
 
 
   StartDate.Enabled := not CBAllDay.Checked;
-//  EndDate.Enabled := not CBAllDay.Checked;
+  EndDate.Enabled := not CBAllDay.Checked;
   EndTime.Enabled := not CBAllDay.Checked;
   StartTime.Enabled := not CBAllDay.Checked;
 
@@ -605,7 +605,7 @@ end;
 procedure TDlgEventEdit.CBAllDayClick(Sender: TObject);
 begin
   StartDate.Enabled := not CBAllDay.Checked;
-  {EndDate.Enabled := not CBAllDay.Checked;                            } 
+  EndDate.Enabled := not CBAllDay.Checked;
   EndTime.Enabled := not CBAllDay.Checked;
   StartTime.Enabled := not CBAllDay.Checked;
 end;

@@ -1,14 +1,14 @@
 object AlarmNotifyForm: TAlarmNotifyForm
-  Left = 359
-  Height = 197
-  Top = 292
+  Left = 645
+  Height = 199
+  Top = 273
   Width = 400
   HorzScrollBar.Page = 399
-  VertScrollBar.Page = 196
+  VertScrollBar.Page = 198
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Reminder'
-  ClientHeight = 197
+  ClientHeight = 199
   ClientWidth = 400
   Color = clWindow
   KeyPreview = True

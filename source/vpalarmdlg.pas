@@ -106,7 +106,7 @@ uses VpSR;
 constructor TVpNotificationDialog.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
-  FBGColor := clInfoBk;
+  FBGColor := clWindow;
   FPlacement.Position := mpCustom;
   FPlacement.Width := 412; 
 end;
