@@ -1,4 +1,4 @@
-{*********************************************************}
+{*********************************************************} 
 {*               VPCANVASUTILS.PAS 1.03                  *}
 {*********************************************************}
 
@@ -84,8 +84,7 @@ interface
 uses
   {$IFDEF LCL}
   LMessages,LCLProc,LCLType,LCLIntf,
-  {$ENDIF}
-  {$IFDEF WINDOWS}
+  {$ELSE}
   Windows,
   {$ENDIF}
   Classes,
@@ -110,7 +109,7 @@ type
 
     protected                                                            
       procedure DrawRotatedText (x, y   : Integer;
-                                 Text   : Widestring;
+                                 Text   : string;
                                  Rotate : Boolean);
       procedure Swap (var a, b : Integer);
 
@@ -978,7 +977,7 @@ begin
 end;
 
 procedure TVpExCanvas.DrawRotatedText (x, y   : Integer;
-                                       Text   : Widestring;
+                                       Text   : string;
                                        Rotate : Boolean);
 
 var
@@ -986,6 +985,7 @@ var
   OldFont       : TFont;
   RealPoint     : TPoint;
   OldBrushStyle : TBrushStyle;
+
 begin
   if not Assigned (FCanvas) then
     raise EVpCanvasError.Create (RSNoCanvas);
@@ -1035,33 +1035,13 @@ begin
     OldBrushStyle := FCanvas.Brush.Style;       
     try
       FCanvas.Brush.Style := bsClear;
-      FCanvas.TextOut(RealPoint.X,RealPoint.Y,Text);
+      FCanvas.TextOut (RealPoint.X, RealPoint.Y, Text);
     finally
       FCanvas.Brush.Style := OldBrushStyle;
     end;
   finally
     FCanvas.Font := OldFont;
   end;
-end;
-
-procedure DrawTextW(Canvas: TCanvas; lpString: PWideChar; var lpRect: TRect; uFormat: Cardinal;
-  AdjustRight: Boolean);
-var Style:TTextStyle;
-begin
-  {$ifndef WINCE}
-    {$ifdef UNIX}
-      {$ifdef LCLgtk}
-        Style.Layout:=tlCenter;
-        Canvas.TextRect(lpRect,lpRect.Left,lpRect.Top,lpString,Style); // theo 24.2.2007 Gibt sonst Striche auf GTK1
-      {$else}
-        DrawTextW(Canvas.Handle, lpString, Length(lpString), lpRect, uFormat, AdjustRight);
-      {$endif}
-    {$else}
-    Canvas.TextOut(lpRect.Left,lpRect.Top,lpString);
-    {$endif}
-  {$else}
-  Canvas.TextOut(lpRect.Left,lpRect.Top,lpString);
-  {$endif}
 end;
 
 function TVpExCanvas.ViewportWidth : Integer;

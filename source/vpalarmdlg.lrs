@@ -1,12 +1,12 @@
 { Das ist eine automatisch erzeugte Lazarus-Ressourcendatei }
 
 LazarusResources.Add('TAlarmNotifyForm','FORMDATA',[
-  'TPF0'#16'TAlarmNotifyForm'#15'AlarmNotifyForm'#4'Left'#3#133#2#6'Height'#3
-  +#199#0#3'Top'#3#17#1#5'Width'#3#144#1#18'HorzScrollBar.Page'#3#143#1#18'Vert'
-  +'ScrollBar.Page'#3#198#0#11'BorderIcons'#11#12'biSystemMenu'#0#11'BorderStyl'
-  +'e'#7#8'bsDialog'#7'Caption'#6#8'Reminder'#12'ClientHeight'#3#199#0#11'Clien'
-  +'tWidth'#3#144#1#5'Color'#7#8'clWindow'#10'KeyPreview'#9#9'OnKeyDown'#7#11'F'
-  +'ormKeyDown'#6'OnShow'#7#8'FormShow'#8'Position'#7#9'poDefault'#0#6'TLabel'
+  'TPF0'#16'TAlarmNotifyForm'#15'AlarmNotifyForm'#4'Left'#3#176#0#6'Height'#3
+  +#197#0#3'Top'#3#232#0#5'Width'#3#144#1#18'HorzScrollBar.Page'#3#143#1#18'Ver'
+  +'tScrollBar.Page'#3#196#0#11'BorderIcons'#11#12'biSystemMenu'#0#11'BorderSty'
+  +'le'#7#8'bsDialog'#7'Caption'#6#8'Reminder'#12'ClientHeight'#3#197#0#11'Clie'
+  +'ntWidth'#3#144#1#5'Color'#7#8'clWindow'#10'KeyPreview'#9#9'OnKeyDown'#7#11
+  +'FormKeyDown'#6'OnShow'#7#8'FormShow'#8'Position'#7#9'poDefault'#0#6'TLabel'
   +#13'SnoozeCaption'#4'Left'#2'0'#6'Height'#2#13#3'Top'#3#136#0#5'Width'#2'N'#9
   +'Alignment'#7#14'taRightJustify'#8'AutoSize'#8#7'Caption'#6#13'SnoozeCaption'
   +#11'ParentColor'#8#0#0#6'TLabel'#8'lSubject'#4'Left'#2#24#6'Height'#2#14#3'T'

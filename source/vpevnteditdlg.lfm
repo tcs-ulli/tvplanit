@@ -534,6 +534,7 @@ object DlgEventEdit: TDlgEventEdit
       Height = 23
       Top = 168
       Width = 64
+      OnChange = AlarmAdvanceChange
       TabOrder = 14
       Text = 'AlarmAdvance'
     end
