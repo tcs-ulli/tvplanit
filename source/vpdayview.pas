@@ -439,7 +439,7 @@ type
                               StopLine     : Integer;
                               UseGran      : TVpGranularity;
                               DisplayOnly  : Boolean); override;
-    property ActiveEvent: TVpEvent read FActiveEvent;
+    property ActiveEvent: TVpEvent read FActiveEvent write FActiveEvent;
     property TopHour: TVpHours read FTopHour write SetTopHour;
     property TopLine: Integer read FTopLine write SetTopLine;
     property LineCount: Integer read FLineCount;
