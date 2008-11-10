@@ -75,6 +75,8 @@ type
     property Font: TFont read FFont write SetFont;
   end;
 
+  { TVpMonthView }
+
   TVpMonthView = class(TVpLinkableControl)
   protected{ private }
     FKBNavigate        : Boolean;
@@ -188,6 +190,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure LoadLanguage;
     procedure Invalidate; override;
     procedure LinkHandler(Sender: TComponent;
       NotificationType: TVpNotificationType;
@@ -227,7 +230,7 @@ type
     property DayNumberFont: TFont
       read FDayNumberFont write SetDayNumberFont;
     property DrawingStyle: TVpDrawingStyle
-      read FDrawingStyle write SetDrawingStyle;
+      read FDrawingStyle write SetDrawingStyle stored True;
     property EventDayStyle: TFontStyles
       read FEventDayStyle write SetEventDayStyle;
     property EventFont: TFont
@@ -363,7 +366,7 @@ begin
   Width := 300;
 
   FDefaultPopup := TPopupMenu.Create (Self);
-  InitializeDefaultPopup;
+  LoadLanguage;
 
   mvHookUp;
 end;
@@ -379,6 +382,13 @@ begin
   FDefaultPopup.Free;
   inherited;
 end;
+
+procedure TVpMonthView.LoadLanguage;
+begin
+  FDefaultPopup.Items.Clear;
+  InitializeDefaultPopup;
+end;
+
 {=====}
 
 procedure TVpMonthView.Invalidate;

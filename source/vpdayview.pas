@@ -404,6 +404,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure LoadLanguage;
 
     procedure DeleteActiveEvent(Verify: Boolean);
     procedure DragDrop(Source: TObject; X, Y: Integer); override;
@@ -459,14 +460,14 @@ type
     property AllDayEventAttributes: TVpAllDayEventAttributes
       read FAllDayEventAttr write FAllDayEventAttr;
 
-    property DotDotDotColor : TColor                                     
+    property DotDotDotColor : TColor
       read FDotDotDotColor write SetDotDotDotColor default clBlack;      
 
     property ShowEventTimes: Boolean                                     
       read FShowEventTimes write SetShowEventTimes default true;         
 
     property DrawingStyle: TVpDrawingStyle
-      read FDrawingStyle write SetDrawingStyle;
+      read FDrawingStyle write SetDrawingStyle stored True;
     property TimeSlotColors: TVpTimeSlotColor
       read FTimeSlotColors write FTimeSlotColors;
     property HeadAttributes: TVpCHAttributes
@@ -774,11 +775,6 @@ begin
   dvTodayBtn.ShowHint            := True;                                
   dvWeekUpBtn.ShowHint           := True;                                
   dvWeekDownBtn.ShowHint         := True;                                
-  dvDayUpBtn.Hint                := rsHintTomorrow;                      
-  dvDayDownBtn.Hint              := rsHintYesterday;                     
-  dvTodayBtn.Hint                := rsHintToday;                         
-  dvWeekUpBtn.Hint               := rsHintNextWeek;                      
-  dvWeekDownBtn.Hint             := rsHintPrevWeek;                      
 
   { Set styles and initialize internal variables }
   {$IFDEF VERSION4}
@@ -837,7 +833,7 @@ begin
   Width                          := 265;
 
   FDefaultPopup := TPopupMenu.Create (Self);
-  InitializeDefaultPopup;
+  LoadLanguage;
 
   dvHookUp;
 end;
@@ -862,6 +858,18 @@ begin
 
   inherited;
 end;
+
+procedure TVpDayView.LoadLanguage;
+begin
+  dvDayUpBtn.Hint                := rsHintTomorrow;
+  dvDayDownBtn.Hint              := rsHintYesterday;
+  dvTodayBtn.Hint                := rsHintToday;
+  dvWeekUpBtn.Hint               := rsHintNextWeek;
+  dvWeekDownBtn.Hint             := rsHintPrevWeek;
+  FDefaultPopup.Items.Clear;
+  InitializeDefaultPopup;
+end;
+
 {=====}
 
 procedure TVpDayView.DeleteActiveEvent(Verify: Boolean);
@@ -1428,6 +1436,7 @@ begin
   end;
   dvRowHeight := Result;
 end;
+
 {=====}
 function TVpDayView.GetLastVisibleDate : TDateTime;                      
 begin                                                                    

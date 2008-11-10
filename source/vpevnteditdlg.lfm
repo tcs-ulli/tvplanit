@@ -3,8 +3,6 @@ object DlgEventEdit: TDlgEventEdit
   Height = 385
   Top = 211
   Width = 697
-  HorzScrollBar.Page = 696
-  VertScrollBar.Page = 384
   BorderStyle = bsToolWindow
   Caption = 'Add / Edit Events'
   ClientHeight = 385
@@ -15,7 +13,9 @@ object DlgEventEdit: TDlgEventEdit
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   OnShow = FormShow
+  ParentFont = False
   Position = poScreenCenter
+  LCLVersion = '0.9.27'
   object Panel1: TPanel
     Height = 41
     Top = 344
@@ -38,6 +38,7 @@ object DlgEventEdit: TDlgEventEdit
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentColor = False
+      ParentFont = False
     end
     object OKBtn: TButton
       Left = 518
@@ -154,7 +155,6 @@ object DlgEventEdit: TDlgEventEdit
         F7ABD629729C901A08A96CD761CA0F0EB52C943268A29B84544A48074B11F80B
         84AC88992D6E2B460000000049454E44AE426082
       }
-      Transparent = False
     end
     object RecurringLbl: TLabel
       Left = 379
@@ -211,7 +211,6 @@ object DlgEventEdit: TDlgEventEdit
         5C1989A6AC1094A6D044FF04F0AB3A8DB14972859E539E4A778A5368D325C9B4
         7671328DB5B6E607EA5FBE1E3353EA940000000049454E44AE426082
       }
-      Transparent = False
     end
     object SpeedButton1: TSpeedButton
       Left = 325
@@ -266,7 +265,6 @@ object DlgEventEdit: TDlgEventEdit
         6935EDC2A22882BCE3C48278415555D54CA287182316FDFF2B4F41BBF9449018
         20E6B2D91FE7D3E5DB1129EAA60000000049454E44AE426082
       }
-      Transparent = False
     end
     object RecurrenceEndsLbl: TLabel
       Left = 352
@@ -301,8 +299,10 @@ object DlgEventEdit: TDlgEventEdit
       Height = 21
       Top = 103
       Width = 93
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
       ItemHeight = 13
+      MaxLength = -1
+      OnChangeBounds = StartTimeChange
+      OnExit = StartTimeExit
       TabOrder = 4
     end
     object EndTime: TComboBox
@@ -310,8 +310,10 @@ object DlgEventEdit: TDlgEventEdit
       Height = 21
       Top = 127
       Width = 93
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
       ItemHeight = 13
+      MaxLength = -1
+      OnChangeBounds = EndTimeChange
+      OnExit = EndTimeExit
       TabOrder = 5
     end
     object Category: TComboBox
@@ -319,8 +321,8 @@ object DlgEventEdit: TDlgEventEdit
       Height = 19
       Top = 46
       Width = 182
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
       ItemHeight = 13
+      MaxLength = -1
       Style = csOwnerDrawFixed
       TabOrder = 1
     end
@@ -329,8 +331,9 @@ object DlgEventEdit: TDlgEventEdit
       Height = 21
       Top = 103
       Width = 183
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
       ItemHeight = 13
+      MaxLength = -1
+      OnChangeBounds = RecurringTypeChange
       Style = csDropDownList
       TabOrder = 6
     end
@@ -348,8 +351,8 @@ object DlgEventEdit: TDlgEventEdit
       Height = 21
       Top = 168
       Width = 88
-      AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
       ItemHeight = 13
+      MaxLength = -1
       Style = csDropDownList
       TabOrder = 8
     end
@@ -390,7 +393,6 @@ object DlgEventEdit: TDlgEventEdit
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
-      ReadOnly = False
       ButtonWidth = 23
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
@@ -429,6 +431,7 @@ object DlgEventEdit: TDlgEventEdit
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       NumGlyphs = 1
+      OnChangeBounds = StartDateChange
       TabOrder = 11
     end
     object EndDate: TDateEdit
@@ -439,7 +442,6 @@ object DlgEventEdit: TDlgEventEdit
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
-      ReadOnly = False
       ButtonWidth = 23
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
@@ -478,6 +480,7 @@ object DlgEventEdit: TDlgEventEdit
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       NumGlyphs = 1
+      OnChangeBounds = EndDateChange
       TabOrder = 12
     end
     object RepeatUntil: TDateEdit
@@ -488,7 +491,6 @@ object DlgEventEdit: TDlgEventEdit
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
-      ReadOnly = False
       ButtonWidth = 23
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100

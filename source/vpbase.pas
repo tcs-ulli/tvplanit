@@ -79,7 +79,7 @@ type
   DOMString = WideString;
 
   { miscellaneous stuff }
-  TVpDrawingStyle = (dsFlat, ds3d);
+  TVpDrawingStyle = (dsFlat, ds3d, dsNone);
 
   { event method types }
   TVpMouseWheelEvent = procedure(Sender : TObject; Shift : TShiftState;

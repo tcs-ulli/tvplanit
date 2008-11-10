@@ -115,6 +115,8 @@ type
     property Bordered: Boolean read FBordered write SetBordered;
   end;
 
+  { TVpWeekView }
+
   TVpWeekView = class(TVpLinkableControl)
   protected{ private }
     FActiveDate        : TDateTime;
@@ -210,6 +212,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure LoadLanguage;
     procedure DeleteActiveEvent(Verify: Boolean);
     procedure Invalidate; override;
     procedure LinkHandler(Sender: TComponent;
@@ -252,7 +255,7 @@ type
       read FDayHeadAttributes write FDayHeadAttributes;
 
     property DrawingStyle: TVpDrawingStyle
-      read FDrawingStyle write SetDrawingStyle;
+      read FDrawingStyle write SetDrawingStyle stored True;
 
     property EventFont: TFont
       read FEventFont write SetEventFont;
@@ -478,7 +481,7 @@ begin
   Width := 300;
 
   FDefaultPopup := TPopupMenu.Create (Self);
-  InitializeDefaultPopup;
+  LoadLanguage;
 
   FAllDayEventAttr.BackgroundColor := Color;
   FAllDayEventAttr.EventBackgroundColor := clBtnFace;
@@ -501,6 +504,13 @@ begin
   FDefaultPopup.Free;
   inherited;
 end;
+
+procedure TVpWeekView.LoadLanguage;
+begin
+  FDefaultPopup.Items.Clear;
+  InitializeDefaultPopup;
+end;
+
 {=====}
 
 procedure TVpWeekView.Invalidate;
