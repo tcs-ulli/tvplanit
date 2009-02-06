@@ -322,8 +322,6 @@ constructor TVpCGInPlaceEdit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   field := '';
-  ParentCtl3D := False;
-  Ctl3D := False;
   TabStop := False;
   BorderStyle := bsNone;
   {$IFDEF VERSION4}

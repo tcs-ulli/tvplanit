@@ -526,8 +526,6 @@ uses
 constructor TVpDvInPlaceEdit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  ParentCtl3D := False;
-  Ctl3D := False;
   TabStop := False;
   BorderStyle := bsNone;
   DoubleBuffered := False;

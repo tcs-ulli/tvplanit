@@ -215,7 +215,6 @@ type
       {-calcualte new sizes for rows and columns}
 
     {VCL control methods}
-    procedure CMCtl3DChanged(var Msg : TMessage); message CM_CTL3DCHANGED;
     procedure CMEnter(var Msg : TMessage); message CM_ENTER;
     procedure CMExit(var Msg : TMessage); message CM_EXIT;
     procedure CMFontChanged(var Msg : TMessage); message CM_FONTCHANGED;
@@ -333,7 +332,6 @@ type
     property BorderStyle;
     property Color;
     property Colors;
-    property Ctl3D;
     property Cursor;
     property DateFormat;
     property DayNameWidth;
@@ -342,7 +340,6 @@ type
     property Enabled;
     property Font;
     property Options;
-    property ParentCtl3D;
     property ParentFont;
     property ParentShowHint;
     property PopupMenu;
@@ -719,12 +716,12 @@ begin
   FillChar(clRowCol, SizeOf(clRowCol), #0);
 
   {set the way the buttons should look}
-  clBtnLeft.Flat     := not Ctl3D and not clPopup;
-  clBtnRevert.Flat   := not Ctl3D and not clPopup;
-  clBtnRight.Flat    := not Ctl3D and not clPopup;
-  clBtnToday.Flat    := not Ctl3D and not clPopup;
-  clBtnNextYear.Flat := not Ctl3D and not clPopup;
-  clBtnPrevYear.Flat := not Ctl3D and not clPopup;
+  clBtnLeft.Flat     := {not Ctl3D and} not clPopup;
+  clBtnRevert.Flat   := {not Ctl3D and} not clPopup;
+  clBtnRight.Flat    := {not Ctl3D and} not clPopup;
+  clBtnToday.Flat    := {not Ctl3D and} not clPopup;
+  clBtnNextYear.Flat := {not Ctl3D and} not clPopup;
+  clBtnPrevYear.Flat := {not Ctl3D and} not clPopup;
 
   clBtnRevert.Visible := cdoShowRevert in FOptions;
   clBtnToday.Visible := cdoShowToday in FOptions;
@@ -778,22 +775,6 @@ begin
   clBtnRevert.Width := Col[5] + Col[6] - calMargin;
   clBtnRevert.Top := ClientHeight - calMargin - clBtnRevert.Height + 1;
   clBtnRevert.Left := clBtnToday.Left - clBtnRevert.Width - calMargin;
-end;
-{=====}
-
-procedure TVpCustomCalendar.CMCtl3DChanged(var Msg : TMessage);
-begin
-  inherited;
-
-  if (csLoading in ComponentState) or not HandleAllocated then
-    Exit;
-
-  if NewStyleControls and (FBorderStyle = bsSingle) then
-    RecreateWnd{$IFDEF LCL}(Self){$ENDIF};
-
-  calReCalcSize (False);
-
-  Invalidate;
 end;
 {=====}
 
@@ -940,7 +921,7 @@ begin
     end;
   end;
 {$ENDIF}
-  if NewStyleControls and (Ctl3D or clPopup) and (FBorderStyle = bsSingle) then begin
+  if NewStyleControls and ({Ctl3D or }clPopup) and (FBorderStyle = bsSingle) then begin
     if not clPopup then
       Params.Style := Params.Style and not WS_BORDER;
     Params.ExStyle := Params.ExStyle or WS_EX_CLIENTEDGE;
@@ -1624,13 +1605,13 @@ var
 
   procedure DrawLine;
   begin
-    if (not Ctl3D) then begin  
+//    if (not Ctl3D) then begin
       RenderCanvas.Pen.Color := LineColor;
       TPSMoveTo (RenderCanvas, Angle, RenderIn,
                  RealLeft, clRowCol[1,0].Bottom-3 + RealTop);
       TPSLineTo (RenderCanvas, Angle, RenderIn,
                  RealRight, clRowCol[1,0].Bottom-3 + RealTop);
-    end else if Ctl3D then begin
+{    end else if Ctl3D then begin
       RenderCanvas.Pen.Color := BevelHighlight;
       TPSMoveTo (RenderCanvas, Angle, RenderIn,
                  RealLeft, clRowCol[1,0].Bottom-3 + RealTop);
@@ -1641,7 +1622,7 @@ var
                  RealLeft,  clRowCol[1,0].Bottom-2 + RealTop);
       TPSLineTo (RenderCanvas, Angle, RenderIn,
                  RealRight, clRowCol[1,0].Bottom-2 + RealTop);
-    end;
+    end;  }
   end;
 
   procedure DrawDay(R, C, I : Integer; Grayed : Boolean);

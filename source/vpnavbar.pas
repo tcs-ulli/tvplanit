@@ -306,7 +306,6 @@ type
     procedure WMNCHitTest(var Msg : TWMNCHitTest);  message WM_NCHITTEST;
     procedure WMSetCursor(var Msg : TWMSetCursor); message WM_SETCURSOR;
     {$ELSE}
-    procedure CMCtl3DChanged(var Msg : TLMessage); message CM_CTL3DCHANGED;
     procedure CMFontChanged(var Message: TLMessage); message CM_FONTCHANGED;
     procedure CMParentColorChanged(var Message: TLMessage); message CM_PARENTCOLORCHANGED;
     {windows message response methods}
@@ -491,7 +490,6 @@ type
     property DragKind;
     {$ENDIF}
     property Align;
-    property Ctl3D;
     property DragCursor;
     property Enabled;
     property Font;
@@ -507,7 +505,6 @@ type
     property OnMouseUp;
     property OnStartDrag;
     property ParentColor;
-    property ParentCtl3D;
     property ParentFont;
     property ParentShowHint;
     property PopupMenu;
@@ -745,8 +742,6 @@ end;
 constructor TVpRenameEdit.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
-
-  Ctl3D := False;
   Visible := False;
   WantReturns := False;
   FolderIndex := -1;
@@ -1151,18 +1146,6 @@ begin
 end;
 {=====}
 
-procedure TVpCustomNavBar.CMCtl3DChanged(var Msg : {$IFDEF LCL}TLMessage{$ELSE}TMessage{$ENDIF});
-begin
-  if (csLoading in ComponentState) or not HandleAllocated then
-    Exit;
-
-  if NewStyleControls and (FBorderStyle = bsSingle) then
-    RecreateWnd{$IFDEF LCL}(self){$ENDIF};
-
-  inherited;
-end;
-{=====}
-
 {$IFNDEF LCL}
 procedure TVpCustomNavBar.CMDesignHitTest(var Msg : TCMDesignHitTest);
 begin
@@ -1193,7 +1176,7 @@ begin
   with Params do
     Style := LongInt(Style) or BorderStyles[FBorderStyle];
 
-  if NewStyleControls and Ctl3D and (FBorderStyle = bsSingle) then begin
+  if NewStyleControls {and Ctl3D }and (FBorderStyle = bsSingle) then begin
     Params.Style := Params.Style and not WS_BORDER;
     Params.ExStyle := Params.ExStyle or WS_EX_CLIENTEDGE;
   end;

@@ -322,8 +322,7 @@ type
     property ControlLink: TVpControlLink read FControlLink write SetControlLink;
 
     property Color;                                                      
-    property Ctl3D;                                                      
-    property Font;                                                       
+    property Font;
     property ParentColor;                                                
     property ParentFont;                                                 
     property ParentShowHint;                                             

@@ -301,8 +301,6 @@ uses
 constructor TVpWvInPlaceEdit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  ParentCtl3D := False;
-  Ctl3D := False;
   TabStop := False;
   BorderStyle := bsNone;
   {$IFDEF VERSION4}

@@ -142,7 +142,6 @@ type
     property BorderStyle;
     property CharCase;
     property Color;
-    property Ctl3D;
     property Cursor;
     property DragCursor;
     property DragMode;
@@ -154,7 +153,6 @@ type
     property HideSelection;
     {$ENDIF}
     property ParentColor;
-    property ParentCtl3D;
     property ParentFont;
     property ParentShowHint;
     property PopupCalColors;
@@ -413,8 +411,6 @@ begin
     Calendar.Height      := FPopupCalHeight;
     Calendar.Width       := FPopupCalWidth;
     Calendar.WeekStarts  := FWeekStarts;
-    Calendar.ParentCtl3D := False;
-    Calendar.Ctl3D       := Ctl3D;
     Calendar.Font.Assign(FPopupCalFont);
   end;
 

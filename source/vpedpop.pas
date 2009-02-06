@@ -186,14 +186,6 @@ begin
         FButton.Width := FButton.Glyph.Width + 6;
     FButton.Left := Width - FButton.Width;
     FButton.Top := 0;
-  end else if Ctl3D then begin
-    FButton.Height := H;
-    FButton.Width := (FButton.Height div 4) * 3;
-    if Assigned(FButton.Glyph) then
-      if FButton.Width < FButton.Glyph.Width + 6 then
-        FButton.Width := FButton.Glyph.Width + 6;
-    FButton.Left := Width - FButton.Width - 4;
-    FButton.Top := 0;
   end else begin
     FButton.Height := H - 2;
     FButton.Width := (FButton.Height div 4) * 3;
