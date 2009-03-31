@@ -83,7 +83,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,FileUtil,
   {$ELSE}
   Windows,
   {$ENDIF}

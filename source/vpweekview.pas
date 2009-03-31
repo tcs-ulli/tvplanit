@@ -48,7 +48,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,FileUtil,
   {$ELSE}
   Windows,Messages,
   {$ENDIF}
@@ -818,7 +818,7 @@ var
       if FDayHeadAttributes.Bordered then
         TPSRectangle (RenderCanvas, Angle, RenderIn, TextRect);
       { Fix Header String }
-      DayStr := FormatDateTime(FDayHeadAttributes.DateFormat, StartDate + I);
+      DayStr := SysToUTF8(FormatDateTime(FDayHeadAttributes.DateFormat, StartDate + I));
       SL := RenderCanvas.TextWidth(DayStr);
       if SL > TextRect.Right - TextRect.Left then begin
         DayStr := GetDisplayString(RenderCanvas, DayStr, 0, TextRect.Right -
@@ -1025,6 +1025,15 @@ var
     HeadTextRect: TRect;
     HeadStr: string;
     HeadStrLen : Integer;
+    function GetWeekOfYear(Datum:TDateTime):byte;
+    var
+      AYear,dummy :word;
+      First       :TDateTime;
+    begin
+      DecodeDate(Datum+((8-DayOfWeek(Datum)) mod 7)-3, AYear, dummy,dummy);
+      First :=EncodeDate(AYear, 1, 1);
+      Result:=(trunc(Datum-First-3+(DayOfWeek(First)+1) mod 7) div 7)+1;
+    end;
   begin
     RenderCanvas.Brush.Color := RealHeadAttrColor;
     RenderCanvas.Font.Assign(TFont(FHeadAttr.Font));
@@ -1049,10 +1058,16 @@ var
       DrawBevelRect (RenderCanvas,
                      TPSRotateRectangle (Angle, RenderIn, HeadRect),
                      BevelHighlightColor, BevelDarkShadow);
+    end else begin
+      HeadRect.Left := RealLeft + 1;
+      HeadRect.Top := RealTop + 1;
+      HeadRect.Right := RealRight - 1;
+      HeadRect.Bottom := HeadRect.Top + wvHeaderHeight;
     end;
+
     { build header caption }
     HeadStr := HeadStr + RSWeekof + ' '
-      + FormatDateTime(DateLabelFormat, StartDate);
+      + FormatDateTime(DateLabelFormat, StartDate)+' (KW'+IntToStr(GetWeekOfYear(StartDate))+')';
     { draw the text }
     if (DisplayOnly) and
        (RenderCanvas.TextWidth (HeadStr) >= RenderIn.Right - RenderIn.Left) then

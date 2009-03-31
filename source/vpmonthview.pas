@@ -34,7 +34,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,
+  LMessages,LCLProc,LCLType,LCLIntf,FileUtil,
   {$ELSE}
   Windows,Messages,
   {$ENDIF}
@@ -570,10 +570,16 @@ var
       DrawBevelRect (RenderCanvas,
                      TPSRotateRectangle (Angle, RenderIn, HeadRect),
                      BevelHighlight, BevelDarkShadow);
+    end
+    else begin
+      HeadRect.Left := RealLeft + 1;
+      HeadRect.Top := RealTop + 1;
+      HeadRect.Right := RealRight - 1;
+      HeadRect.Bottom := RealTop + mvDayHeadHeight;
     end;
 
     { Acquire startdate and end date }
-    HeadStr := FormatDateTime(DateLabelFormat, DisplayDate);
+    HeadStr := SysToUTF8(FormatDateTime(DateLabelFormat, DisplayDate));
 
     { draw the text }
     if (DisplayOnly) and
