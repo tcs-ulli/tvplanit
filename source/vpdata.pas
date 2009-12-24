@@ -55,7 +55,7 @@ type
   
   TVpAlarmAdvType = (atMinutes, atHours, atDays);
 
-  TVpRepeatType = (rtNone, rtDaily, rtWeekly, rtMonthlyByDay, rtMonthlyByDate,
+  TVpRepeatType = (rtNone=0, rtDaily, rtWeekly, rtMonthlyByDay, rtMonthlyByDate,
     rtYearlyByDay, rtYearlyByDate, rtCustom);
 
   TVpContactSort = (csLastFirst, csFirstLast);
@@ -185,7 +185,11 @@ type
     property EventCount: Integer read GetCount;
   end;
 
+  { TVpEvent }
+
   TVpEvent = class
+  private
+    FLocation: string;
   protected{private}
     FOwner: TVpSchedule;
     FItemIndex: Integer;
@@ -267,6 +271,7 @@ type
     { is Zero if IntervalCode <> 7      }
     property CustInterval : Integer read FCustInterval write SetCustInterval;
     property Owner: TVpSchedule read FOwner;
+    property Location: string read FLocation write FLocation;
     { Reserved for your use }
     property UserField0: string read FUserField0 write FUserField0;
     property UserField1: string read FUserField1 write FUserField1;
@@ -901,16 +906,11 @@ end;
 
 procedure TVpEvent.SetAllDayEvent(Value: Boolean);
 begin
-  if Value <> FAllDayEvent then begin
-    FAllDayEvent := Value;
-    if FAllDayEvent then begin
-      {Set the StartTime to 12:00 AM}
-      StartTime := Trunc(StartTime);
-      {Set the EndTime to 11:59 PM}
-      EndTime := StartTime + 1 - (1 / MinutesInDay);
+  if Value <> FAllDayEvent then
+    begin
+      FAllDayEvent := Value;
+      Changed := true;
     end;
-    Changed := true;
-  end;
 end;
 {=====}
 
@@ -1266,20 +1266,21 @@ end;
 function TVpSchedule.EventCountByDay(Value: TDateTime): Integer;
 var
   I: Integer;
-  Evnt: TVpEvent;
+  Event: TVpEvent;
 begin
   result := 0;
   for I := 0 to pred(EventCount) do begin
-    Evnt := GetEvent(I);
+    Event := GetEvent(I);
     { if this is a repeating event and it falls on today then inc     }
     { result                                                          }
-    if (Evnt.RepeatCode > rtNone)
-    and (RepeatsOn(Evnt, Value))
+    if (Event.RepeatCode > rtNone)
+    and (RepeatsOn(Event, Value))
     then
       Inc(Result)
     { otherwise if it is an event that naturally falls on today, then }
     { inc result                                                      }
-    else if (trunc(Evnt.StartTime) = trunc(Value)) then
+    else if ((trunc(Value) >= trunc(Event.StartTime))
+         and (trunc(Value) <= trunc(Event.EndTime))) then
       Inc(Result);
   end;
 end;
@@ -1306,7 +1307,8 @@ begin
         EventList.Add(Event)
       { otherwise if this event naturally falls on "Date" then add it to   }
       { the list.                                                          }
-      else if (trunc(Event.StartTime) = trunc(Date)) then
+      else if ((trunc(Date) >= trunc(Event.StartTime))
+           and (trunc(Date) <= trunc(Event.EndTime))) then
         EventList.Add(Event);
     end;
   end;
@@ -1327,7 +1329,8 @@ begin
     { Add this days events to the Event List. }
     for I := 0 to pred(EventCount) do begin
       Event := GetEvent(I);
-      if (trunc(Event.StartTime) = trunc(Date)) and (Event.AllDayEvent) then
+      if (((trunc(Date) >= trunc(Event.StartTime)) and (trunc(Date) <= trunc(Event.EndTime))) or (RepeatsOn(Event,Date)))
+      and (Event.AllDayEvent) then
         EventList.Add(Event);
     end;
   end;

@@ -126,7 +126,6 @@ type
     {$ENDIF}
   public
     constructor Create(AOwner: TComponent); override;
-    procedure Move(const Loc: TRect; Redraw: Boolean);
   end;
 
   TVpRHAttributes = class(TPersistent)
@@ -529,19 +528,6 @@ begin
   TabStop := False;
   BorderStyle := bsNone;
   DoubleBuffered := False;
-end;
-{=====}
-
-procedure TVpDvInPlaceEdit.Move(const Loc: TRect; Redraw: Boolean);
-begin
-  CreateHandle;
-  Redraw := Redraw or not IsWindowVisible(Handle);
-  Invalidate;
-  with Loc do
-    SetWindowPos(Handle, HWND_TOP, Left, Top, Right - Left, Bottom - Top,
-      {SWP_SHOWWINDOW or }SWP_NOREDRAW);
-  if Redraw then Invalidate;
-  SetFocus;
 end;
 {=====}
 
@@ -2236,14 +2222,14 @@ begin
     dvInPlaceEditor := TVpDvInPlaceEdit.Create(Self);
     dvInPlaceEditor.Parent := self;
     dvInPlaceEditor.OnExit := EndEdit;
-    dvInPlaceEditor.Move (Rect (dvActiveIconRec.Right + FGutterWidth +   
-                                    TextMargin,                          
-                                dvActiveEventRec.Top + TextMargin,       
-                                dvActiveEventRec.Right,                  
-                                dvActiveEventRec.Bottom - 1),            
-                          true);                                         
+    dvInPlaceEditor.SetBounds(dvActiveIconRec.Right + FGutterWidth +
+                                    TextMargin,
+                              dvActiveEventRec.Top + TextMargin,
+                              dvActiveEventRec.Right,
+                              dvActiveEventRec.Bottom - 1);
     dvInPlaceEditor.Text := FActiveEvent.Description;
     Invalidate;
+    dvInPlaceEditor.SetFocus;
   end;
 end;
 {=====}
@@ -3010,6 +2996,8 @@ var
                               { event represented by this record.           }
       WidthDivisor : Integer; { the maximum OLEvents of all of this event's }
                               { overlapping neighbors.                      }
+      RealStartTime : TDateTime;
+      RealEndTime : TDateTime;
     end;
   type
     TVpDvEventArray = array of TVpDvEventRec;
@@ -3050,8 +3038,7 @@ var
 
 
     { returns the number of events which overlap the specified event }
-    function CountOverlappingEvents(Event: TVpEvent;
-      const EArray: TVpDvEventArray): Integer;
+    function CountOverlappingEvents(Event: TVpEvent;const EArray: TVpDvEventArray): Integer;
     var
       K, SelfLevel: Integer;
       Tmp: TVpEvent;
@@ -3623,8 +3610,7 @@ begin
   for I := 0 to pred(MaxVisibleEvents) do begin
     if EventArray[I].Event = nil then
       Break;
-    EventArray[I].WidthDivisor := GetMaxOLEvents(
-      TVpEvent(EventArray[I].Event), EventArray);
+    EventArray[I].WidthDivisor := GetMaxOLEvents(TVpEvent(EventArray[I].Event), EventArray);
   end;
 
   {Make one last pass, to make sure that we have set up the width }
@@ -3669,9 +3655,10 @@ begin
     { Determine how much time is represented by one pixel. It is the   }
     { amount of time represented by one line, divided by the height of }
     { a line in pixels. }
-    PixelDuration := (LineDuration
-       / (dvLineMatrix[Col, StartLine].Rec.Bottom -
-          dvLineMatrix[Col, StartLine].Rec.Top));
+    if (dvLineMatrix[Col, StartLine].Rec.Bottom - dvLineMatrix[Col, StartLine].Rec.Top) > 0 then
+      PixelDuration := (LineDuration / (dvLineMatrix[Col, StartLine].Rec.Bottom - dvLineMatrix[Col, StartLine].Rec.Top))
+    else
+      PixelDuration := 0;
 
     { Iterate through events and paint them }
     for I := 0 to pred(MaxVisibleEvents) do begin
@@ -3682,11 +3669,17 @@ begin
       if Event = nil then
         Break;
 
-      { Find the line on which this event starts }
-      EventSLine := GetStartLine(Event.StartTime, Granularity);
       { remove the date portion from the start and end times }
-      EventSTime := Event.StartTime - trunc(Event.StartTime);
-      EventETime := Event.EndTime - trunc(Event.EndTime);
+      EventSTime := Event.StartTime;
+      EventETime := Event.EndTime;
+      if trunc(EventSTime) < trunc(RenderDate) then //First Event
+        EventSTime := 0+trunc(RenderDate);
+      if trunc(EventETime) > trunc(RenderDate) then //First Event
+        EventETime := 0.999+trunc(RenderDate);
+      EventSTime := EventSTime - RenderDate;
+      EventETime := EventETime - RenderDate;
+      { Find the line on which this event starts }
+      EventSLine := GetStartLine(EventSTime, Granularity);
       { Handle End Times of Midnight }
       if EventETime = 0 then                                             
         EventETime := EncodeTime (23, 59, 59, 0);                        

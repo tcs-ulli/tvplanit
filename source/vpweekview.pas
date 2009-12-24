@@ -74,7 +74,6 @@ type
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure Move(const Loc: TRect; Redraw: Boolean);
   end;
 
   TVpWvHeadAttributes = class(TPersistent)
@@ -309,22 +308,10 @@ begin
 end;
 {=====}
 
-procedure TVpWvInPlaceEdit.Move(const Loc: TRect; Redraw: Boolean);
-begin
-  CreateHandle;
-  Redraw := Redraw or not IsWindowVisible(Handle);
-  with Loc do
-    SetWindowPos(Handle, HWND_TOP, Left, Top, Right - Left, Bottom - Top,
-      {SWP_SHOWWINDOW or }SWP_NOREDRAW);
-  if Redraw then Invalidate;
-  SetFocus;
-end;
-{=====}
-
 procedure TVpWvInPlaceEdit.CreateParams(var Params: TCreateParams);
 begin
   inherited CreateParams(Params);
-  Params.Style := Params.Style{ or ES_MULTILINE};
+//  Params.Style := Params.Style or ES_MULTILINE;
 end;
 {=====}
 
@@ -778,6 +765,8 @@ var
     EAIndex  : Integer;
     DayStr   : string;
     EventList: TList;
+    TodayStartTime: Double;
+    TodayEndTime: Double;
   begin
     RenderCanvas.Pen.Color := RealLineColor;
     RenderCanvas.Pen.Style := psSolid;
@@ -812,8 +801,7 @@ var
       { draw day head}
       RenderCanvas.Font.Assign(FDayHeadAttributes.Font);
       RenderCanvas.Brush.Color := RealDayHeadAttrColor;
-      TextRect := Rect(DayRect.Left, DayRect.Top, DayRect.Right, DayRect.Top
-        + wvDayHeadHeight);
+      TextRect := Rect(DayRect.Left, DayRect.Top, DayRect.Right, DayRect.Top + wvDayHeadHeight);
       TPSFillRect (RenderCanvas, Angle, RenderIn, TextRect);
       if FDayHeadAttributes.Bordered then
         TPSRectangle (RenderCanvas, Angle, RenderIn, TextRect);
@@ -882,19 +870,21 @@ var
 
             { format the display text }
             DayStr := '';
-            if ShowEventTime then begin
-              if TimeFormat = tf24Hour then
-                DayStr := FormatDateTime('hh:mm',
-                  TVpEvent(EventList.List^[j]).StartTime)
-                  + ' - ' + FormatDateTime('hh:mm',
-                  TVpEvent(EventList.List^[j]).EndTime) + ': '
+            TodayStartTime := TVpEvent(EventList.List^[j]).StartTime;
+            TodayEndTime := TVpEvent(EventList.List^[j]).EndTime;
+            if trunc(TodayStartTime) < trunc(StartDate + I) then //First Event
+              TodayStartTime := 0;
+            if trunc(TodayEndTime) > trunc(StartDate + I) then //Last Event
+              TodayEndTime := 0.9999;
+            if ShowEventTime then
+              begin
+               if TimeFormat = tf24Hour then
+                 DayStr := FormatDateTime('hh:mm',TodayStartTime)
+                  + ' - ' + FormatDateTime('hh:mm',TodayEndTime) + ': '
               else
-                DayStr := FormatDateTime('hh:mm AM/PM',
-                  TVpEvent(EventList.List^[j]).StartTime)
-                  + ' - ' + FormatDateTime('hh:mm AM/PM',
-                  TVpEvent(EventList.List^[j]).EndTime) + ': ';
-            end;
-
+                DayStr := FormatDateTime('hh:mm AM/PM',TVpEvent(EventList.List^[j]).StartTime)
+                  + ' - ' + FormatDateTime('hh:mm AM/PM',TVpEvent(EventList.List^[j]).EndTime) + ': ';
+              end;
             if DayStr = '' then
               DayStr := TVpEvent(EventList.List^[j]).Description
             else
@@ -1066,8 +1056,7 @@ var
     end;
 
     { build header caption }
-    HeadStr := HeadStr + RSWeekof + ' '
-      + FormatDateTime(DateLabelFormat, StartDate)+' (KW'+IntToStr(GetWeekOfYear(StartDate))+')';
+    HeadStr := HeadStr + RSWeekof + ' ' + FormatDateTime(DateLabelFormat, StartDate)+' (KW'+IntToStr(GetWeekOfYear(StartDate))+')';
     { draw the text }
     if (DisplayOnly) and
        (RenderCanvas.TextWidth (HeadStr) >= RenderIn.Right - RenderIn.Left) then
@@ -1822,11 +1811,13 @@ begin
       wvInPlaceEditor := TVpWvInPlaceEdit.Create(Self);
       wvInPlaceEditor.Parent := self;
       wvInPlaceEditor.OnExit := EndEdit;
-      wvInPlaceEditor.Move(Rect(wvActiveEventRec.Left + TextMargin,
-        wvActiveEventRec.Top, wvActiveEventRec.Right - TextMargin,
-        wvActiveEventRec.Bottom), true);
+      wvInPlaceEditor.SetBounds(wvActiveEventRec.Left + TextMargin,
+                                wvActiveEventRec.Top,
+                                wvActiveEventRec.Right - (TextMargin*2),
+                                wvActiveEventRec.Bottom- (TextMargin*2));
       wvInPlaceEditor.Text := FActiveEvent.Description;
       Invalidate;
+      wvInPlaceEditor.SetFocus;
     end;
   end;
 end;
@@ -1938,7 +1929,7 @@ begin
     wvInPlaceEditor.Free;
     wvInPlaceEditor := nil;
     Invalidate;
-    SetFocus;
+//    SetFocus;
   end;
 end;
 {=====}

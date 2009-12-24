@@ -13,10 +13,10 @@ object DlgEventEdit: TDlgEventEdit
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   OnShow = FormShow
-  ParentFont = False
   Position = poScreenCenter
-  LCLVersion = '0.9.27'
+  LCLVersion = '0.9.29'
   object Panel1: TPanel
+    Left = 0
     Height = 41
     Top = 344
     Width = 697
@@ -289,7 +289,7 @@ object DlgEventEdit: TDlgEventEdit
       Left = 40
       Height = 19
       Top = 170
-      Width = 74
+      Width = 68
       Caption = '&Reminder:'
       OnClick = AlarmSetClick
       TabOrder = 3
@@ -300,7 +300,6 @@ object DlgEventEdit: TDlgEventEdit
       Top = 103
       Width = 93
       ItemHeight = 13
-      MaxLength = -1
       OnChangeBounds = StartTimeChange
       OnExit = StartTimeExit
       TabOrder = 4
@@ -311,7 +310,6 @@ object DlgEventEdit: TDlgEventEdit
       Top = 127
       Width = 93
       ItemHeight = 13
-      MaxLength = -1
       OnChangeBounds = EndTimeChange
       OnExit = EndTimeExit
       TabOrder = 5
@@ -322,7 +320,7 @@ object DlgEventEdit: TDlgEventEdit
       Top = 46
       Width = 182
       ItemHeight = 13
-      MaxLength = -1
+      OnDrawItem = CategoryDrawItem
       Style = csOwnerDrawFixed
       TabOrder = 1
     end
@@ -332,8 +330,7 @@ object DlgEventEdit: TDlgEventEdit
       Top = 103
       Width = 183
       ItemHeight = 13
-      MaxLength = -1
-      OnChangeBounds = RecurringTypeChange
+      OnChange = RecurringTypeChange
       Style = csDropDownList
       TabOrder = 6
     end
@@ -342,8 +339,11 @@ object DlgEventEdit: TDlgEventEdit
       Height = 29
       Top = 99
       Width = 19
+      Min = 0
       Max = 32767
+      Position = 0
       TabOrder = 9
+      Wrap = False
       OnClick = IntervalUpDownClick
     end
     object AlarmAdvType: TComboBox
@@ -352,7 +352,6 @@ object DlgEventEdit: TDlgEventEdit
       Top = 168
       Width = 88
       ItemHeight = 13
-      MaxLength = -1
       Style = csDropDownList
       TabOrder = 8
     end
@@ -365,13 +364,14 @@ object DlgEventEdit: TDlgEventEdit
       Max = 120
       Position = 1
       TabOrder = 10
+      Wrap = False
       OnClick = AdvanceUpDownClick
     end
     object CBAllDay: TCheckBox
       Left = 109
       Height = 19
       Top = 85
-      Width = 90
+      Width = 84
       Caption = 'All Day Event'
       OnClick = CBAllDayClick
       TabOrder = 2
@@ -387,13 +387,15 @@ object DlgEventEdit: TDlgEventEdit
     end
     object StartDate: TDateEdit
       Left = 117
-      Height = 23
+      Height = 21
       Top = 104
       Width = 80
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
+      DateOrder = doNone
       ButtonWidth = 23
+      CharCase = ecNormal
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -431,18 +433,21 @@ object DlgEventEdit: TDlgEventEdit
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       NumGlyphs = 1
+      MaxLength = 0
       OnChangeBounds = StartDateChange
       TabOrder = 11
     end
     object EndDate: TDateEdit
       Left = 117
-      Height = 23
+      Height = 21
       Top = 131
       Width = 80
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
+      DateOrder = doNone
       ButtonWidth = 23
+      CharCase = ecNormal
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -480,18 +485,21 @@ object DlgEventEdit: TDlgEventEdit
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       NumGlyphs = 1
+      MaxLength = 0
       OnChangeBounds = EndDateChange
       TabOrder = 12
     end
     object RepeatUntil: TDateEdit
       Left = 460
-      Height = 23
+      Height = 21
       Top = 129
       Width = 80
       CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
       OKCaption = 'OK'
       CancelCaption = 'Cancel'
+      DateOrder = doNone
       ButtonWidth = 23
+      CharCase = ecNormal
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
@@ -529,11 +537,12 @@ object DlgEventEdit: TDlgEventEdit
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
       }
       NumGlyphs = 1
+      MaxLength = 0
       TabOrder = 13
     end
     object AlarmAdvance: TEdit
       Left = 130
-      Height = 23
+      Height = 21
       Top = 168
       Width = 64
       OnChange = AlarmAdvanceChange

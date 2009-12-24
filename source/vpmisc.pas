@@ -221,7 +221,7 @@ end;
 
 function LoadBaseBitmap(lpBitmapName : PAnsiChar) : HBITMAP;
 begin
-//TODO:  Result := LoadBitmap(FindClassHInstance(TVpCustomControl), lpBitmapName);
+//  Result := LoadBitmap(FindClassHInstance(TVpCustomControl), lpBitmapName);
 end;
 {=====}
 

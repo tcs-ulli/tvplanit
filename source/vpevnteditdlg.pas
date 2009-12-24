@@ -96,6 +96,8 @@ type
     edtUnusedPlaceholder: TEdit;
     imgClock: TImage;
     RecurrenceEndsLbl: TLabel;
+    procedure CategoryDrawItem(Control: TWinControl; Index: Integer;
+      ARect: TRect; State: TOwnerDrawState);
     procedure OKBtnClick(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -109,8 +111,6 @@ type
     procedure RecurringTypeChange(Sender: TObject);
     procedure AlarmSetClick(Sender: TObject);
     procedure EndDateChange(Sender: TObject);
-    procedure CategoryDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
     procedure CBAllDayClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -207,6 +207,78 @@ begin
   ReturnCode := rtCommit;
   Close;
 end;
+
+procedure TDlgEventEdit.CategoryDrawItem(Control: TWinControl; Index: Integer;
+  ARect: TRect; State: TOwnerDrawState);
+var
+  Color, SaveColor: TColor;
+  Name: string;
+  ColorRect: TRect;
+begin
+  Category.Canvas.FillRect(ARect);
+  Color := clBlack;
+  case Index of
+    0: begin
+      Color := CatColorMap.Category0.Color;
+      Name := CatColorMap.Category0.Description;
+    end;
+    1:  begin
+      Color := CatColorMap.Category1.Color;
+      Name := CatColorMap.Category1.Description;
+    end;
+    2:  begin
+      Color := CatColorMap.Category2.Color;
+      Name := CatColorMap.Category2.Description;
+    end;
+    3:  begin
+      Color := CatColorMap.Category3.Color;
+      Name := CatColorMap.Category3.Description;
+    end;
+    4:  begin
+      Color := CatColorMap.Category4.Color;
+      Name := CatColorMap.Category4.Description;
+    end;
+    5:  begin
+      Color := CatColorMap.Category5.Color;
+      Name := CatColorMap.Category5.Description;
+    end;
+    6:  begin
+      Color := CatColorMap.Category6.Color;
+      Name := CatColorMap.Category6.Description;
+    end;
+    7:  begin
+      Color := CatColorMap.Category7.Color;
+      Name := CatColorMap.Category7.Description;
+    end;
+    8:  begin
+      Color := CatColorMap.Category8.Color;
+      Name := CatColorMap.Category8.Description;
+    end;
+    9:  begin
+      Color := CatColorMap.Category9.Color;
+      Name := CatColorMap.Category9.Description;
+    end;
+  end; {Case}
+
+  SaveColor := Category.Canvas.Brush.Color;
+  Category.Canvas.Brush.Color := Color;
+  Category.Canvas.Pen.Color := clBlack;
+  ColorRect.Left := ARect.Left + 3;
+  ColorRect.Top := ARect.Top + 2;
+  ColorRect.Bottom := ARect.Bottom - 2;
+  ColorRect.Right := ColorRect.Left + 20;
+  Category.Canvas.FillRect(ColorRect);
+  {$IFDEF VERSION5}
+  Category.Canvas.Rectangle(ColorRect);
+  {$ELSE}
+  Category.Canvas.Rectangle(ColorRect.Left, ColorRect.Top, ColorRect.Right,
+    ColorRect.Bottom);
+  {$ENDIF}
+  ARect.Left := ColorRect.Right + 5;
+  Category.Canvas.Brush.Color := SaveColor;
+  Category.Canvas.TextOut(ARect.Left, ARect.Top, Name);
+end;
+
 {=====}
 
 procedure TDlgEventEdit.CancelBtnClick(Sender: TObject);
@@ -298,12 +370,12 @@ end;
 {=====}
 
 procedure TDlgEventEdit.StartTimeChange(Sender: TObject);
-{var                                                                   } 
-{  ST: TDateTime;                                                      }                                                       
+var
+  ST: TDateTime;
 begin
   { Verify the value is valid }
   try
-    {ST :=} StrToTime(StartTime.Text);
+    ST := StrToTime(StartTime.Text);
   except
     StartTime.Color := clRed;
     if Visible then
@@ -314,14 +386,14 @@ begin
 
   { if the end time is less than the start time then change the end time to }
   { follow the start time by 30 minutes }
-  {if ST > StrToDateTime(EndTime.Text) then begin                      } 
-  {  if TimeFormat = tf24Hour then                                     } 
-  {    EndTime.Text := FormatDateTime ('h:mm',                         } 
-  {                                    ST + (30/MinutesInDay))         } 
-  {  else                                                              } 
-  {    EndTime.Text := FormatDateTime ('hh:mm AM/PM',                  } 
-  {                                    ST + (30/MinutesInDay));        } 
-  {end;                                                                } 
+  if ST > StrToTime(EndTime.Text) then begin
+    if TimeFormat = tf24Hour then
+      EndTime.Text := FormatDateTime ('h:mm',
+                                      ST + (30/MinutesInDay))
+    else
+      EndTime.Text := FormatDateTime ('hh:mm AM/PM',
+                                      ST + (30/MinutesInDay));
+  end;
 
 end;
 {=====}
@@ -355,14 +427,14 @@ begin
 
   { if the end time is less than the start time then change the start time to }
   { precede the end time by 30 minutes }
-  {if ET < StrToDateTime(StartTime.Text) then begin                    } 
-  {  if TimeFormat = tf24Hour then                                     } 
-  {    StartTime.Text := FormatDateTime ('h:mm',                       } 
-  {                                      ET - (30/MinutesInDay))       } 
-  {  else                                                              } 
-  {    StartTime.Text := FormatDateTime ('h:mm AM/PM',                 } 
-  {                                      ET - (30/MinutesInDay));      } 
-  {end;                                                                } 
+  if ET < StrToTime(StartTime.Text) then begin
+    if TimeFormat = tf24Hour then
+      StartTime.Text := FormatDateTime ('h:mm',
+                                        ET - (30/MinutesInDay))
+    else
+      StartTime.Text := FormatDateTime ('h:mm AM/PM',
+                                        ET - (30/MinutesInDay));
+  end;
 end;
 {=====}
 
@@ -527,78 +599,6 @@ begin
   AlarmAdvType.Enabled  := AlarmSet.Checked;
   AdvanceUpDown.Enabled := AlarmSet.Checked;
   Event.SnoozeTime := 0.0;
-end;
-{=====}
-
-procedure TDlgEventEdit.CategoryDrawItem(Control: TWinControl;
-  Index: Integer; Rect: TRect; State: TOwnerDrawState);
-var
-  Color, SaveColor: TColor;
-  Name: string;
-  ColorRect: TRect;
-begin
-  Category.Canvas.FillRect(Rect);
-  Color := clBlack;
-  case Index of
-    0: begin
-      Color := CatColorMap.Category0.Color;
-      Name := CatColorMap.Category0.Description;
-    end;
-    1:  begin
-      Color := CatColorMap.Category1.Color;
-      Name := CatColorMap.Category1.Description;
-    end;
-    2:  begin
-      Color := CatColorMap.Category2.Color;
-      Name := CatColorMap.Category2.Description;
-    end;
-    3:  begin
-      Color := CatColorMap.Category3.Color;
-      Name := CatColorMap.Category3.Description;
-    end;
-    4:  begin
-      Color := CatColorMap.Category4.Color;
-      Name := CatColorMap.Category4.Description;
-    end;
-    5:  begin
-      Color := CatColorMap.Category5.Color;
-      Name := CatColorMap.Category5.Description;
-    end;
-    6:  begin
-      Color := CatColorMap.Category6.Color;
-      Name := CatColorMap.Category6.Description;
-    end;
-    7:  begin
-      Color := CatColorMap.Category7.Color;
-      Name := CatColorMap.Category7.Description;
-    end;
-    8:  begin
-      Color := CatColorMap.Category8.Color;
-      Name := CatColorMap.Category8.Description;
-    end;
-    9:  begin
-      Color := CatColorMap.Category9.Color;
-      Name := CatColorMap.Category9.Description;
-    end;
-  end; {Case}
-
-  SaveColor := Category.Canvas.Brush.Color;
-  Category.Canvas.Brush.Color := Color;
-  Category.Canvas.Pen.Color := clBlack;
-  ColorRect.Left := Rect.Left + 3;
-  ColorRect.Top := Rect.Top + 2;
-  ColorRect.Bottom := Rect.Bottom - 2;
-  ColorRect.Right := ColorRect.Left + 20;
-  Category.Canvas.FillRect(ColorRect);
-  {$IFDEF VERSION5}
-  Category.Canvas.Rectangle(ColorRect);
-  {$ELSE}
-  Category.Canvas.Rectangle(ColorRect.Left, ColorRect.Top, ColorRect.Right,
-    ColorRect.Bottom);
-  {$ENDIF}
-  Rect.Left := ColorRect.Right + 5;
-  Category.Canvas.Brush.Color := SaveColor;
-  Category.Canvas.TextOut(Rect.Left, Rect.Top, Name);
 end;
 {=====}
 
