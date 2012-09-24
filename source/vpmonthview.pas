@@ -366,6 +366,7 @@ begin
   Width := 300;
 
   FDefaultPopup := TPopupMenu.Create (Self);
+  Self.PopupMenu := FDefaultPopup;
   LoadLanguage;
 
   mvHookUp;
@@ -1490,9 +1491,6 @@ begin
     if FRightClickChangeDate then                                        
       mvSetDateByCoord (Point (Msg.XPos, Msg.YPos));                     
     ClientOrigin := GetClientOrigin;
-
-    FDefaultPopup.Popup (Msg.XPos + ClientOrigin.x,
-                         Msg.YPos + ClientOrigin.y);
   end;
 end;
 {=====}

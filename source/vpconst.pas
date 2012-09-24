@@ -26,7 +26,7 @@
 {*                                                                            *}
 {* ***** END LICENSE BLOCK *****                                              *}
 
-{$I Vp.INC}
+{.$I Vp.INC}
 
 unit VpConst;
   {-Versioning defines and methods}

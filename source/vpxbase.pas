@@ -669,7 +669,7 @@ end;
 procedure TVpMemoryStream.SetPointer(Ptr : Pointer; Size : Integer);
 begin
   Assert(not Assigned(Memory));
-//  inherited;
+//  inherited SetPointer(Ptr);
 end;
 
 {===TVpFileStream====================================================}

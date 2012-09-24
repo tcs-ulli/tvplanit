@@ -817,6 +817,7 @@ begin
   Width                          := 265;
 
   FDefaultPopup := TPopupMenu.Create (Self);
+  Self.PopupMenu := FDefaultPopup;
   LoadLanguage;
 
   dvHookUp;
@@ -1983,9 +1984,6 @@ begin
     else
       for i := 0 to FDefaultPopup.Items.Count - 1 do
         FDefaultPopup.Items[i].Enabled := True;
-
-    FDefaultPopup.Popup (x + ClientOrigin.x,
-                         y + ClientOrigin.y);
   end;
     end;
 end;
@@ -3916,7 +3914,7 @@ begin
         finally                                                          
           if ((EventRect.Bottom > IconRect.Bottom) and                   
               (EventRect.Left > IconRect.Right)) or                      
-              (WrapStyle = wsNoFlow) then begin                          
+              (WrapStyle = wsIconFlow) then begin
             DeleteObject (WorkRegion1);                                  
             DeleteObject (WorkRegion2);                                  
             DeleteObject (TextRegion);                                   

@@ -117,6 +117,8 @@ type
   { TVpWeekView }
 
   TVpWeekView = class(TVpLinkableControl)
+  private
+    procedure SetActiveEvent(AValue: TVpEvent);
   protected{ private }
     FActiveDate        : TDateTime;
     FColumnWidth       : Integer;
@@ -124,7 +126,7 @@ type
     FDateLabelFormat   : string;
     FDayHeadAttributes : TVpDayHeadAttr;
     FDrawingStyle      : TVpDrawingStyle;
-    FActiveEvent       : TVpEvent;
+    FaActiveEvent       : TVpEvent;
     FHeadAttr          : TVpWvHeadAttributes;
     FEventFont         : TFont;
     FLineColor         : TColor;
@@ -206,6 +208,7 @@ type
     procedure WMSize(var Msg: TLMSize); message LM_SIZE;
     procedure WMLButtonDown(var Msg : TLMLButtonDown); message LM_LBUTTONDOWN;
     procedure WMLButtonDblClk(var Msg : TLMLButtonDblClk); message LM_LBUTTONDBLCLK;
+    //TODO: Bug 0020755 braks this in GTK2...
     procedure WMRButtonDown(var Msg : TLMRButtonDown); message LM_RBUTTONDOWN;
     {$ENDIF}
   public
@@ -232,7 +235,7 @@ type
                               StopLine     : Integer;
                               UseGran      : TVpGranularity;
                               DisplayOnly  : Boolean); override;
-    property ActiveEvent: TVpEvent read FActiveEvent;
+    property ActiveEvent: TVpEvent read FaActiveEvent write SetActiveEvent;
     property Date: TDateTime read FActiveDate write SetActiveDate;
     property VisibleLines: Integer read FVisibleLines;
   published
@@ -466,6 +469,7 @@ begin
   Width := 300;
 
   FDefaultPopup := TPopupMenu.Create (Self);
+  Self.PopupMenu := FDefaultPopup;
   LoadLanguage;
 
   FAllDayEventAttr.BackgroundColor := Color;
@@ -1208,8 +1212,9 @@ var
 begin
   DoIt := not Verify;
 
-  if FActiveEvent <> nil then begin
-    Str := '"' + FActiveEvent.Description + '"';
+  EndEdit(nil);
+  if ActiveEvent <> nil then begin
+    Str := '"' + ActiveEvent.Description + '"';
 
     if Verify then
       DoIt := (MessageDlg(RSDelete + ' ' + Str + ' ' + RSFromSchedule
@@ -1217,8 +1222,8 @@ begin
         [mbYes, mbNo], 0) = mrYes);
 
     if DoIt then begin
-      FActiveEvent.Deleted := true;
-      FActiveEvent := nil;
+      ActiveEvent.Deleted := true;
+      ActiveEvent := nil;
       DataStore.PostEvents;
       Invalidate;
     end;
@@ -1244,6 +1249,12 @@ begin
   end;
 end;
 {=====}
+
+procedure TVpWeekView.SetActiveEvent(AValue: TVpEvent);
+begin
+  if FaActiveEvent=AValue then Exit;
+  FaActiveEvent:=AValue;
+end;
 
 procedure TVpWeekView.SetDrawingStyle(Value: TVpDrawingStyle);
 begin
@@ -1404,6 +1415,9 @@ begin
   if DataStore = nil then
     Exit;
 
+  wvSetDateByCoord(Point(Msg.XPos, Msg.YPos));
+  EventAtCoord (Point (Msg.XPos, Msg.YPos));
+
   // if the mouse was pressed down in the client area, then select the cell.
   if not focused then SetFocus; 
 
@@ -1411,7 +1425,7 @@ begin
   begin
     { The mouse click landed inside the client area }
     { If we have hit an active event then we must want to edit it }
-    if FActiveEvent <> nil then begin
+    if ActiveEvent <> nil then begin
       { edit this event }
       wvSpawnEventEditDialog(False);
     end
@@ -1419,7 +1433,7 @@ begin
       { otherwise, we must want to create a new event }
       StartTime := trunc(Date) + 1 / 2; { default to 12:00 noon }
       EndTime := StartTime + (30 / MinutesInDay); { StartTime + 30 minutes }
-      FActiveEvent := DataStore.Resource.Schedule.AddEvent(
+      ActiveEvent := DataStore.Resource.Schedule.AddEvent(
         DataStore.GetNextID('Events'), StartTime, EndTime);
       { edit this new event }
       wvSpawnEventEditDialog(True);
@@ -1439,17 +1453,16 @@ var
 
 begin
   inherited;
-
   if not Assigned (PopupMenu) then begin
-    if not focused then 
-      SetFocus;
+//    if not focused then
+//      SetFocus;
     { The mouse click landed inside the client area }
     wvSetDateByCoord(Point(Msg.XPos, Msg.YPos));
     EventAtCoord (Point (Msg.XPos, Msg.YPos));
     wvClickTimer.Enabled := false;
     ClientOrigin := GetClientOrigin;
 
-    if not Assigned (FActiveEvent) then
+    if not Assigned (ActiveEvent) then
       for i := 0 to FDefaultPopup.Items.Count - 1 do begin
         if (FDefaultPopup.Items[i].Tag = 1) or (ReadOnly) then           
           FDefaultPopup.Items[i].Enabled := False;
@@ -1457,9 +1470,6 @@ begin
     else
       for i := 0 to FDefaultPopup.Items.Count - 1 do
         FDefaultPopup.Items[i].Enabled := True;
-
-    FDefaultPopup.Popup (Msg.XPos + ClientOrigin.x,
-                         Msg.YPos + ClientOrigin.y);
   end;
 end;
 {=====}
@@ -1575,7 +1585,7 @@ begin
     Exit;                                                              
   StartTime := trunc(Date) + 1 / 2; { default to 12:00 noon }
   EndTime := StartTime + (30 / MinutesInDay); { StartTime + 30 minutes }
-  FActiveEvent := DataStore.Resource.Schedule.AddEvent (
+  ActiveEvent := DataStore.Resource.Schedule.AddEvent (
                       DataStore.GetNextID ('Events'), StartTime, EndTime);
   { edit this new event }
   wvSpawnEventEditDialog (True);
@@ -1586,7 +1596,7 @@ procedure TVpWeekView.PopupDeleteEvent (Sender : TObject);
 begin
   if ReadOnly then                                                     
     Exit;                                                              
-  if FActiveEvent <> nil then
+  if ActiveEvent <> nil then
     DeleteActiveEvent (True);
 end;
 {=====}
@@ -1595,7 +1605,7 @@ procedure TVpWeekView.PopupEditEvent (Sender : TObject);
 begin
   if ReadOnly then                                                     
     Exit;                                                              
-  if FActiveEvent <> nil then
+  if ActiveEvent <> nil then
     { edit this Event }
     wvSpawnEventEditDialog(False);
 end;
@@ -1603,7 +1613,7 @@ end;
 
 procedure TVpWeekView.EditSelectedEvent;
 begin
-  if FActiveEvent <> nil then
+  if ActiveEvent <> nil then
     wvSpawnEventEditDialog(false);
 end;
 {=====}
@@ -1690,27 +1700,27 @@ begin
 
   AllowIt := false;
   if Assigned(FOwnerEditEvent) then
-    FOwnerEditEvent(self, FActiveEvent, DataStore.Resource, AllowIt)
+    FOwnerEditEvent(self, ActiveEvent, DataStore.Resource, AllowIt)
   else begin
     EventDlg := TVpEventEditDialog.Create(nil);
     try
       EventDlg.DataStore := DataStore;
-      AllowIt := EventDlg.Execute(FActiveEvent, FTimeFormat);
+      AllowIt := EventDlg.Execute(ActiveEvent, FTimeFormat);
     finally
       EventDlg.Free;
     end;
   end;
 
   if AllowIt then begin
-    FActiveEvent.Changed := true;
+    ActiveEvent.Changed := true;
     DataStore.PostEvents;
     if Assigned(FOnAddEvent) then                                        
-      FOnAddEvent(self, FActiveEvent);                                   
+      FOnAddEvent(self, ActiveEvent);
     Invalidate;
   end else begin
     if NewEvent then begin
-      DataStore.Resource.Schedule.DeleteEvent(FActiveEvent);
-      FActiveEvent := nil;
+      DataStore.Resource.Schedule.DeleteEvent(ActiveEvent);
+      ActiveEvent := nil;
     end;
     DataStore.PostEvents;
     Invalidate;
@@ -1752,7 +1762,7 @@ begin
   for I := 0 to pred(Length(wvEventArray)) do begin
     if wvEventArray[I].Event = nil then begin
       { we've hit the end of visible events without finding a match }
-      FActiveEvent := nil;
+      ActiveEvent := nil;
       wvActiveEventRec.Top := 0;
       wvActiveEventRec.Bottom := 0;
       wvActiveEventRec.Right := 0;
@@ -1767,7 +1777,7 @@ begin
     and (Pt.Y < wvEventArray[I].Rec.Bottom) then begin
       { point falls inside this event's rectangle }
       wvHotPoint := Pt;
-      FActiveEvent := TVpEvent(wvEventArray[I].Event);
+      ActiveEvent := TVpEvent(wvEventArray[I].Event);
       wvActiveEventRec := wvEventArray[I].Rec;
       result := true;
       Exit;
@@ -1775,7 +1785,7 @@ begin
 
     else begin
       { point is not within the boundaries of this event's rectangle. }
-      FActiveEvent := nil;
+      ActiveEvent := nil;
       wvActiveEventRec.Top := 0;
       wvActiveEventRec.Bottom := 0;
       wvActiveEventRec.Right := 0;
@@ -1800,11 +1810,11 @@ procedure TVpWeekView.EditEvent;
 var
   AllowIt: Boolean;
 begin
-  if FActiveEvent <> nil then begin
+  if ActiveEvent <> nil then begin
     AllowIt := true;
     { call the user defined BeforeEdit event }
     if Assigned(FBeforeEdit) then
-      FBeforeEdit(Self, FActiveEvent, AllowIt);
+      FBeforeEdit(Self, ActiveEvent, AllowIt);
 
     if AllowIt then begin
       { create and spawn the in-place editor }
@@ -1815,7 +1825,7 @@ begin
                                 wvActiveEventRec.Top,
                                 wvActiveEventRec.Right - (TextMargin*2),
                                 wvActiveEventRec.Bottom- (TextMargin*2));
-      wvInPlaceEditor.Text := FActiveEvent.Description;
+      wvInPlaceEditor.Text := ActiveEvent.Description;
       Invalidate;
       wvInPlaceEditor.SetFocus;
     end;
@@ -1919,11 +1929,11 @@ end;
 procedure TVpWeekView.EndEdit(Sender: TObject);
 begin
   if wvInPlaceEditor <> nil then begin
-    if wvInPlaceEditor.Text <> FActiveEvent.Description then begin
-      FActiveEvent.Description := wvInPlaceEditor.Text;
-      FActiveEvent.Changed := true;
+    if wvInPlaceEditor.Text <> ActiveEvent.Description then begin
+      ActiveEvent.Description := wvInPlaceEditor.Text;
+      ActiveEvent.Changed := true;
       if Assigned(FAfterEdit) then
-        FAfterEdit(self, FActiveEvent);
+        FAfterEdit(self, ActiveEvent);
       DataStore.PostEvents;
     end;
     wvInPlaceEditor.Free;

@@ -228,7 +228,7 @@ type
 
     procedure DeregisterAllWatchers;
     procedure DeregisterWatcher (Watcher : THandle);
-    function GetNextID(TableName: string): integer; virtual; abstract;
+    function GetNextID(TableName: string): int64; virtual; abstract;
     property Resources: TVpResources read FResources;
     procedure Load; virtual;
     procedure LoadEvents; virtual; abstract;
