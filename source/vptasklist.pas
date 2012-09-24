@@ -1006,7 +1006,7 @@ var
       { Draw the glyph }
       Bmp := Graphics.TBitmap.Create;
       try
-        Bmp.Handle := LoadBaseBitmap('VPCHECKPAD');
+        Bmp.LoadFromResourceName(HINSTANCE,'VPCHECKPAD'); //soner changed: Bmp.Handle := LoadBaseBitmap('VPCHECKPAD');
         { load and return the handle to bitmap resource}
         if Bmp.Height > 0 then begin
           GlyphRect.TopLeft := Point (HeadRect.Left + TextMargin,
@@ -1016,6 +1016,7 @@ var
 //TODO:          RenderCanvas.BrushCopy (TPSRotateRectangle (Angle, RenderIn, GlyphRect),
 //                                  Bmp, Rect(0, 0, Bmp.Width, Bmp.Height),
 //            Bmp.Canvas.Pixels[0, Bmp.Height - 1]);
+          RenderCanvas.Draw(GlyphRect.TopLeft.x,GlyphRect.TopLeft.y,Bmp); //soner added
           HeadRect.Left := HeadRect.Left + Bmp.Width + TextMargin;
         end;
       finally

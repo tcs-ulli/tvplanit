@@ -742,13 +742,11 @@ begin
   dvDayUpBtn.Transparent         := true;
   dvWeekUpBtn.Transparent        := true;
   { load their images }
-  {$IFNDEF UNIX}
-  dvDayUpBtn.Glyph.Handle        := LoadBaseBitmap('VPRIGHTARROW');
-  dvDayDownBtn.Glyph.Handle      := LoadBaseBitmap('VPLEFTARROW');
-  dvTodayBtn.Glyph.Handle        := LoadBaseBitmap('VPTODAY');
-  dvWeekUpBtn.Glyph.Handle       := LoadBaseBitmap('VPRIGHTARROWS');
-  dvWeekDownBtn.Glyph.Handle     := LoadBaseBitmap('VPLEFTARROWS');
-  {$ENDIF}
+  dvDayUpBtn.Glyph.LoadFromResourceName(HINSTANCE,'VPRIGHTARROW');
+  dvDayDownBtn.Glyph.LoadFromResourceName(HINSTANCE,'VPLEFTARROW');
+  dvTodayBtn.Glyph.LoadFromResourceName(HINSTANCE,'VPTODAY');
+  dvWeekUpBtn.Glyph.LoadFromResourceName(HINSTANCE,'VPRIGHTARROWS');
+  dvWeekDownBtn.Glyph.LoadFromResourceName(HINSTANCE,'VPLEFTARROWS');
   { set their OnClick handler }
   dvDayUpBtn.OnClick             := dvNavButtonsClick;
   dvDayDownBtn.OnClick           := dvNavButtonsClick;

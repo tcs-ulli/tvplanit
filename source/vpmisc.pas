@@ -221,6 +221,10 @@ end;
 
 function LoadBaseBitmap(lpBitmapName : PAnsiChar) : HBITMAP;
 begin
+  {$IFDEF FPC}
+   //wird direkt geladen
+   //fImageList.AddLazarusResource('TABSET_SCROLLER');//, clFuchsia);
+  {$ENDIF}
 //  Result := LoadBitmap(FindClassHInstance(TVpCustomControl), lpBitmapName);
 end;
 {=====}

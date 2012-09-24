@@ -30,15 +30,12 @@
 
 unit VpBase;
 
-{$IFDEF WINDOWS}
-{$R VpBASE.RES}
-{$ENDIF}
 
 interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,
+  LMessages,LCLProc,LCLType, LResources,
   {$ELSE}
   Windows,
   {$ENDIF}
@@ -963,5 +960,10 @@ begin
 end;
 {=====}
 
+//soenr ich habe das hinzugefügt
+{$IFDEF FPC}
+initialization
+  {$i vpbase.lrs}
+{$ENDIF}
 end.
 
