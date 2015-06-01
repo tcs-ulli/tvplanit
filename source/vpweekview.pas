@@ -211,6 +211,8 @@ type
     //TODO: Bug 0020755 braks this in GTK2...
     procedure WMRButtonDown(var Msg : TLMRButtonDown); message LM_RBUTTONDOWN;
     {$ENDIF}
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer
+       ); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -735,12 +737,15 @@ var
           EventStr := EventStr + Event.Description;
 
           RenderCanvas.Brush.Color := ADEventBackgroundColor;
+          if Event.Color<>clNone then
+            RenderCanvas.Brush.Color:=Event.Color;
           RenderCanvas.Pen.Color := ADEventBorderColor;
           TPSRectangle (RenderCanvas, Angle, RenderIn,
                         ADEventRect.Left + TextMargin,
                         ADEventRect.Top + TextMargin div 2,
                         ADEventRect.Right - TextMargin,
                         ADEventRect.Top + ADTextHeight + TextMargin div 2);
+          RenderCanvas.Font.Size:=Font.Size;
           TPSTextOut (RenderCanvas,Angle, RenderIn,
                       AdEventRect.Left + TextMargin * 2 + TextMargin div 2,
                       AdEventRect.Top + TextMargin,
@@ -810,16 +815,21 @@ var
       if FDayHeadAttributes.Bordered then
         TPSRectangle (RenderCanvas, Angle, RenderIn, TextRect);
       { Fix Header String }
-      DayStr := SysToUTF8(FormatDateTime(FDayHeadAttributes.DateFormat, StartDate + I));
+      DayStr := SysToUtf8(FormatDateTime(FDayHeadAttributes.DateFormat, StartDate + I));
       SL := RenderCanvas.TextWidth(DayStr);
       if SL > TextRect.Right - TextRect.Left then begin
         DayStr := GetDisplayString(RenderCanvas, DayStr, 0, TextRect.Right -
         TextRect.Left - TextMargin);
       end;
       SL := RenderCanvas.TextWidth(DayStr);
-      TextRect.Left := TextRect.Right - SL - TextMargin;
+      TextRect.Left := TextRect.Left + TextMargin;
       TPSTextOut (RenderCanvas, Angle, RenderIn,
                   TextRect.Left, TextRect.Top + TextMargin - 1, DayStr);
+
+      DayRect.Top:=DayRect.Top+2;
+      DayRect.Left:=DayRect.left+2;
+      DayRect.Right:=DayRect.Right-2;
+      DayRect.Bottom:=DayRect.Bottom-2;
 
       if (DataStore <> nil) and (DataStore.Resource <> nil)
       and (DataStore.Resource.Schedule.EventCountByDay(StartDate + I) > 0)
@@ -899,6 +909,12 @@ var
             RenderCanvas.Font.Assign(FEventFont);
             RenderCanvas.Brush.Color := RealColor;
 
+            if TVpEvent(EventList.List^[j]).Color<>clNone then
+              begin
+                RenderCanvas.Brush.Color := TVpEvent(EventList.List^[j]).Color;
+                TPSFillRect(RenderCanvas,Angle,RenderIn,TextRect);
+              end;
+
             StrLn := RenderCanvas.TextWidth(DayStr);
             if (StrLn > TextRect.Right - TextRect.Left - TextMargin) then
             begin
@@ -930,10 +946,10 @@ var
          (StartDate + I = Trunc (FActiveDate)) and                       
          (Focused) then                                                  
         TPSDrawFocusRect (RenderCanvas, Angle, RenderIn,
-                          Rect (DayRect.Left + 2,
-                                DayRect.Top + wvDayHeadHeight + 2,
-                                DayRect.Right - 2,
-                                DayRect.Bottom - 2));
+                          Rect (DayRect.Left,
+                                DayRect.Top + wvDayHeadHeight,
+                                DayRect.Right ,
+                                DayRect.Bottom));
 
       { update WeekdayArray }
       wvWeekdayArray[I].Rec := DayRect;
@@ -1057,6 +1073,7 @@ var
       HeadRect.Top := RealTop + 1;
       HeadRect.Right := RealRight - 1;
       HeadRect.Bottom := HeadRect.Top + wvHeaderHeight;
+      TPSFillRect (RenderCanvas, Angle, RenderIn, HeadRect);
     end;
 
     { build header caption }
@@ -1453,11 +1470,11 @@ var
 
 begin
   inherited;
+  wvSetDateByCoord(Point(Msg.XPos, Msg.YPos));
   if not Assigned (PopupMenu) then begin
 //    if not focused then
 //      SetFocus;
     { The mouse click landed inside the client area }
-    wvSetDateByCoord(Point(Msg.XPos, Msg.YPos));
     EventAtCoord (Point (Msg.XPos, Msg.YPos));
     wvClickTimer.Enabled := false;
     ClientOrigin := GetClientOrigin;
@@ -1472,6 +1489,27 @@ begin
         FDefaultPopup.Items[i].Enabled := True;
   end;
 end;
+
+procedure TVpWeekView.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
+var
+  i: Integer;
+begin
+  if (Y > wvHeaderHeight) then
+  begin
+    EventAtCoord(Point(X, Y));
+  end;
+  if not Assigned (ActiveEvent) then
+    for i := 0 to FDefaultPopup.Items.Count - 1 do begin
+      if (FDefaultPopup.Items[i].Tag = 1) or (ReadOnly) then
+        FDefaultPopup.Items[i].Enabled := False;
+    end
+  else
+    for i := 0 to FDefaultPopup.Items.Count - 1 do
+      FDefaultPopup.Items[i].Enabled := True;
+  inherited MouseDown(Button, Shift, X, Y);
+end;
+
 {=====}
 
 procedure TVpWeekView.InitializeDefaultPopup;
@@ -1928,15 +1966,18 @@ end;
 
 procedure TVpWeekView.EndEdit(Sender: TObject);
 begin
-  if wvInPlaceEditor <> nil then begin
-    if wvInPlaceEditor.Text <> ActiveEvent.Description then begin
+  if (wvInPlaceEditor <> nil) then begin
+    if Assigned(ActiveEvent) and (wvInPlaceEditor.Text <> ActiveEvent.Description) then begin
       ActiveEvent.Description := wvInPlaceEditor.Text;
       ActiveEvent.Changed := true;
       if Assigned(FAfterEdit) then
         FAfterEdit(self, ActiveEvent);
       DataStore.PostEvents;
     end;
-    wvInPlaceEditor.Free;
+    try
+      wvInPlaceEditor.Free;
+    except
+    end;
     wvInPlaceEditor := nil;
     Invalidate;
 //    SetFocus;
@@ -1977,4 +2018,4 @@ begin
 end;
 {=====}
 
-end.
+end.

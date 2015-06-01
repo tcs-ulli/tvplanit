@@ -39,7 +39,7 @@ uses
   {$ELSE}
   Windows,
   {$ENDIF}
-  SysUtils, Classes,
+  SysUtils, Classes,Graphics,
   {$IFDEF VERSION6} Types, {$ENDIF}
   VpBase, VpSR, VpConst, Dialogs;
 
@@ -189,7 +189,10 @@ type
 
   TVpEvent = class
   private
+    FColor: TColor;
     FLocation: string;
+    FStrCategory: String;
+    procedure SetCategory(AValue: String);
   protected{private}
     FOwner: TVpSchedule;
     FItemIndex: Integer;
@@ -257,6 +260,7 @@ type
     property Description : string read FDescription write SetDescription;
     property Note : string read FNote write SetNote;
     property Category : Integer read FCategory write SetCategory;
+    property StrCategory : String read FStrCategory write SetCategory;
     property AlarmSet : Boolean read FAlarmSet write SetAlarmSet;
     property AlarmAdv : Integer read FAlarmAdv write SetAlarmAdv;
     property Loading : Boolean read FLoading write FLoading;
@@ -272,6 +276,7 @@ type
     property CustInterval : Integer read FCustInterval write SetCustInterval;
     property Owner: TVpSchedule read FOwner;
     property Location: string read FLocation write FLocation;
+    property Color : TColor read FColor write FColor;
     { Reserved for your use }
     property UserField0: string read FUserField0 write FUserField0;
     property UserField1: string read FUserField1 write FUserField1;
@@ -829,6 +834,8 @@ begin
   FChanged := false;
   FItemIndex := -1;
   FSnoozeTime := 0.0;
+  FCategory:=8;
+  FColor:=clNone;
 end;
 {=====}
 
@@ -904,6 +911,13 @@ begin
   end;
 end;
 {=====}
+
+procedure TVpEvent.SetCategory(AValue: String);
+begin
+  if FStrCategory=AValue then Exit;
+  FStrCategory:=AValue;
+  Changed := true;
+end;
 
 procedure TVpEvent.SetAllDayEvent(Value: Boolean);
 begin
@@ -1255,9 +1269,10 @@ begin
         and (Day > trunc(Event.StartTime)) then begin
           { if the number of elapsed days between the "Day" parameter and  }
           { the event start time is evenly divisible by the event's custom }
-          { interval, then we have a recurrence on this day                }
-           result := (Trunc(Day) - Trunc(Event.StartTime))
-             mod Event.CustInterval = 0;
+          { interval, then we have a recurrence on this day }
+          if Event.CustInterval <> 0 then
+            result := (Trunc(Day) - Trunc(Event.StartTime)) mod Event.CustInterval = 0
+          else Result := false;
         end;
     end;
   end;
@@ -1296,6 +1311,23 @@ begin
     EventList.Clear
 
   else begin
+    { Add Allday Events. }
+    for I := 0 to pred(EventCount) do begin
+      Event := GetEvent(I);
+
+      { if this is a repeating event and it falls on "Date" then add it to }
+      { the list.                                                          }
+      if (Event.RepeatCode > rtNone)
+      and (RepeatsOn(Event, Date))
+      and Event.AllDayEvent then
+        EventList.Add(Event)
+      { otherwise if this event naturally falls on "Date" then add it to   }
+      { the list.                                                          }
+      else if ((trunc(Date) >= trunc(Event.StartTime))
+           and (trunc(Date) <= trunc(Event.EndTime)))
+           and Event.AllDayEvent then
+        EventList.Add(Event);
+    end;
     { Add this days events to the Event List. }
     for I := 0 to pred(EventCount) do begin
       Event := GetEvent(I);
@@ -1304,12 +1336,13 @@ begin
       { the list.                                                          }
       if (Event.RepeatCode > rtNone)
       and (RepeatsOn(Event, Date))
-      then
+      and (not Event.AllDayEvent) then
         EventList.Add(Event)
       { otherwise if this event naturally falls on "Date" then add it to   }
       { the list.                                                          }
       else if ((trunc(Date) >= trunc(Event.StartTime))
-           and (trunc(Date) <= trunc(Event.EndTime))) then
+           and (trunc(Date) <= trunc(Event.EndTime)))
+           and (not Event.AllDayEvent) then
         EventList.Add(Event);
     end;
   end;
@@ -2293,4 +2326,4 @@ begin
 end;
 {=====}
 
-end.
+end.

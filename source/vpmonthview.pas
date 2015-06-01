@@ -258,7 +258,8 @@ type
     property OnEventClick: TVpOnEventClick                               
       read FOnEventClick write FOnEventClick;                            
     property OnEventDblClick: TVpOnEventClick                            
-      read FOnEventDblClick write FOnEventDblClick;                      
+      read FOnEventDblClick write FOnEventDblClick;
+    property OnDblClick;
   end;
 
 implementation
@@ -580,7 +581,7 @@ var
     end;
 
     { Acquire startdate and end date }
-    HeadStr := SysToUTF8(FormatDateTime(DateLabelFormat, DisplayDate));
+    HeadStr := SysToUtf8(FormatDateTime(DateLabelFormat, DisplayDate));
 
     { draw the text }
     if (DisplayOnly) and
@@ -705,7 +706,7 @@ var
                                  mvColWidth - (TextMargin * 2));
       end;
       StrL := RenderCanvas.TextWidth(Str);
-
+      RenderCanvas.Font.Size:=Self.Font.Size;
       TPSTextOut (RenderCanvas, Angle, RenderIn,
                   dhRect.Left + (dhRect.Right - dhRect.Left) div 2 -
                   (Strl div 2), dhRect.Top + TextMargin - 1, Str);
@@ -742,6 +743,7 @@ var
     OldBrush      : TBrush;
     OldPen        : TPen;
     OldFont       : TFont;
+    TmpRect: TRect;
   begin
     { initialize the MonthDayArray }
     for I := 0 to Pred(Length(mvMonthDayArray)) do begin
@@ -1053,6 +1055,25 @@ var
                                      mvMonthDayArray[I].Rec.Bottom - 4));
                 Break;
               end;
+
+              RenderCanvas.Brush.Color := RealColor;
+
+              if TVpEvent(EventList.List^[j]).Color<>clNone then
+                begin
+                  TmpRect := TextRect;
+                  TmpRect.Top:=TmpRect.Top+3;
+                  TmpRect.Left:=TmpRect.Left+3;
+                  TmpRect.Right:=TmpRect.Right-24;
+                  RenderCanvas.GradientFill(TmpRect,TVpEvent(EventList.List^[j]).Color,RealColor,gdHorizontal);
+                end
+              else if TVpEvent(EventList.List^[j]).AllDayEvent then
+                begin
+                  TmpRect := TextRect;
+                  TmpRect.Top:=TmpRect.Top+3;
+                  TmpRect.Left:=TmpRect.Left+3;
+                  TmpRect.Right:=TmpRect.Right-24;
+                  RenderCanvas.GradientFill(TmpRect,clBtnFace,RealColor,gdHorizontal);
+                end;
 
               { shorten events that are next to the day number, in order }
               { to give the day number enough room }
@@ -1451,7 +1472,8 @@ begin
     { Did the mouse click land on an event? }                            
     if SelectEventAtCoord(Point(Msg.XPos, Msg.YPos))                     
     and (Assigned(FOnEventDblClick)) then                                
-      FOnEventDblClick(self, mvActiveEvent);                             
+      FOnEventDblClick(self, mvActiveEvent)
+    else if Assigned(OnDblClick) then OnDblClick(Self);
   end;                                                                   
 end;                                                                     
 {=====}                                                                  
@@ -1490,9 +1512,9 @@ begin
       SetFocus;
     if FRightClickChangeDate then                                        
       mvSetDateByCoord (Point (Msg.XPos, Msg.YPos));                     
-    ClientOrigin := GetClientOrigin;
   end;
 end;
+
 {=====}
 
 procedure TVpMonthView.InitializeDefaultPopup;
@@ -1706,4 +1728,4 @@ begin
 end;
 {=====}
 
-end.
+end.

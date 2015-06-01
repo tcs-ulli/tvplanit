@@ -30,9 +30,8 @@
 
 unit VpBase;
 
-
 interface
-
+{$R vpbase.res}
 uses
   {$IFDEF LCL}
   LMessages,LCLProc,LCLType, LResources,
@@ -966,4 +965,4 @@ initialization
   {$i vpbase.lrs}
 {$ENDIF}
 end.
-
+
