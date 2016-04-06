@@ -48,7 +48,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LMessages,LCLProc,LCLType,LCLIntf,FileUtil,
+  LMessages,LCLProc,LCLType,LCLIntf,FileUtil,LazFileUtils,LazUTF8,
   {$ELSE}
   Windows,Messages,
   {$ENDIF}
@@ -2018,4 +2018,4 @@ begin
 end;
 {=====}
 
-end.
+end.
